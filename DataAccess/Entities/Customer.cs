@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models.Customer
+namespace DataAccess.Entities
 {
-    public class CustomerModel
+    [Table("Customer", Schema="public")]
+    public class Customer
     {
-        public int id { get; set; } 
+        [Key]
+        public int ID { get; set; }
         public string name { get; set; }
         public string lastname { get; set; }
         public string email { get; set; }
         public string dni { get; set; }
+        public string password { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.models;
+﻿using Domain.Models.Customer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace Domain.services.customer.auth
+namespace Domain.Services.Customer.auth
 {
 
     public class JWTProvider : IJWTProvider
@@ -63,17 +63,25 @@ namespace Domain.services.customer.auth
 
         public bool ValidateToken(string token)
         {
-            TokenValidationParameters validationParameters = new TokenValidationParameters()
+            try
             {
-                ValidateLifetime = true,
-                ValidateAudience = false, // Because there is no audiance in the generated token
-                ValidateIssuer = false,   // Because there is no issuer in the generated token
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-            };
+                TokenValidationParameters validationParameters = new TokenValidationParameters()
+                {
+                    ValidateLifetime = true,
+                    ValidateAudience = false, // Because there is no audiance in the generated token
+                    ValidateIssuer = false,   // Because there is no issuer in the generated token
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                };
 
-            SecurityToken validatedToken;
-            IPrincipal principal = this.handler.ValidateToken(token, validationParameters, out validatedToken);
-            return true;
+                SecurityToken validatedToken;
+                IPrincipal principal = this.handler.ValidateToken(token, validationParameters, out validatedToken);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
 
 

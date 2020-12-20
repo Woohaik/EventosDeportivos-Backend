@@ -1,10 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.models
+namespace Domain.models.Event
 {
     public class EventModel
     {
@@ -13,6 +14,7 @@ namespace Domain.models
         int limit { get; set; }
         DateTime start { get; set; }
         DateTime finish { get; set; }
+        EventType type { get; set; }
 
     }
 }

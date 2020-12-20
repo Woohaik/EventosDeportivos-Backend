@@ -1,24 +1,25 @@
-﻿using Domain.services.customer;
-using Domain.models;
+﻿using Domain.Services.Customer;
+using Domain.Models.Customer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Domain.Services.Customer.auth;
 
 namespace Api.Controllers
 {
 
     public class AuthController : ApiController
     {
+        private IAuth customerAuthservices = CustomerService.Instance;
 
         [HttpPost]
         [Route("api/auth/login")]
         public HttpResponseMessage Login([FromBody] CredentialModel userCred)
         {
-            ICustomerService services = CustomerService.Instance;
-            return Request.CreateResponse(HttpStatusCode.OK, services.LoginCustomer(userCred));
+            return Request.CreateResponse(HttpStatusCode.OK, customerAuthservices.LoginCustomer(userCred));
         }
 
         [HttpPost]
@@ -28,14 +29,14 @@ namespace Api.Controllers
 
             if (headers.Contains("sportToken"))
             {
-                return Request.CreateResponse(HttpStatusCode.OK , headers.GetValues("sportToken").First());
+                CustomerModel customer = customerAuthservices.AuthenticateCustomer(headers.GetValues("sportToken").First());
+                if (customer != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, customer);
+                }
             }
 
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
-
-
-
-
     }
 }

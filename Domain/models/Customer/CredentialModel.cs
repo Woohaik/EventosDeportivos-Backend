@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.models
+namespace Domain.Models.Customer
 {
     public class CredentialModel
     {

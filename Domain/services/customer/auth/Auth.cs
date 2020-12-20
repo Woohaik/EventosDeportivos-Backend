@@ -1,11 +1,11 @@
-﻿using Domain.models;
+﻿using Domain.Models.Customer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.services.customer.auth
+namespace Domain.Services.Customer.auth
 {
     public class Auth : IAuth
     {
@@ -41,7 +41,7 @@ namespace Domain.services.customer.auth
             return true;
         }
 
-        public AuthenticationModel Login(CredentialModel credentials)
+        public AuthenticationModel LoginCustomer(CredentialModel credentials)
         {
             CustomerModel model = new CustomerModel()
             {
@@ -61,7 +61,7 @@ namespace Domain.services.customer.auth
             return authModel;
         }
 
-        public CustomerModel Authenticate(string token)
+        public CustomerModel AuthenticateCustomer(string token)
         {
             bool istokenValid = JWTProvider.Instance.ValidateToken(token);
 
