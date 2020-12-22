@@ -5,27 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DataAccess.Repositories
 {
     public class CustomerRepository
     {
 
+
         public bool RegisterCustomer(Customer customer)
         {
-            try
-            {
-                using (var db = new DatabaseContext())
-                {
-                    db.CustomerObj.Add(customer);
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+
+          
+            return false;
+
         }
     }
 }

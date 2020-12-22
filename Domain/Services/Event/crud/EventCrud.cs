@@ -34,7 +34,7 @@ namespace Domain.Services.Event.crud
             throw new NotImplementedException();
         }
 
-        public EventModel UpdateEvent(int id, EventModel eventModel)
+        public bool UpdateEvent(int id, EventModel eventModel)
         {
             throw new NotImplementedException();
         }

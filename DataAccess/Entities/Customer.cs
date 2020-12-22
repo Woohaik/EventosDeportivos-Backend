@@ -8,15 +8,21 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entities
 {
-    [Table("Customer", Schema="public")]
+
     public class Customer
     {
-        [Key]
-        public int ID { get; set; }
-        public string name { get; set; }
-        public string lastname { get; set; }
-        public string email { get; set; }
-        public string dni { get; set; }
-        public string password { get; set; }
+
+        public int CustomerId { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string CustomerLastname { get; set; }
+
+        public string CustomerEmail { get; set; }
+
+        public string CustomerDni { get; set; }
+
+        public string Customerpassword { get; set; }
+        // public ICollection<CustomerEvent> CustomerEvents { get; set; }
     }
 }

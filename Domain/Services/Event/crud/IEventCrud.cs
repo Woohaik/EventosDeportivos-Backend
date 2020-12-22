@@ -10,7 +10,7 @@ namespace Domain.Services.Event.crud
     public interface IEventCrud
     {
         bool AddEvent(EventModel eventModel);
-        EventModel UpdateEvent(int id , EventModel eventModel);
+        bool UpdateEvent(int id, EventModel eventModel);
         bool DeleteEvent(int id);
         IEnumerable<EventModel> GetEvents();
         EventModel GetEventById(int id);
