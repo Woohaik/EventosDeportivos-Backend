@@ -33,22 +33,22 @@ namespace Data.Repositories
             }
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<customers>> GetAll()
+        public async Task<IEnumerable<customers>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<customers> GetById(int id)
+        public async Task<customers> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateById(int id, customers entity)
+        public async Task UpdateById(int id, customers entity)
         {
             throw new NotImplementedException();
         }

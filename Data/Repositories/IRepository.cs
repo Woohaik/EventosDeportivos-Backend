@@ -10,8 +10,8 @@ namespace Data.Repositories
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        void DeleteById(int id);
-        void UpdateById(int id, T entity);
+        Task DeleteById(int id);
+        Task UpdateById(int id, T entity);
         Task Add(T entity);
     }
 }
