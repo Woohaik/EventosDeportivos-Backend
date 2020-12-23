@@ -1,5 +1,6 @@
 ﻿
 using Data;
+using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services.Customer.auth;
 using System;
@@ -15,40 +16,72 @@ namespace Domain.Services.Customer.crud
         public async Task Add(ICustomer model)
         {
 
-            customers entity = new customers()
+            customers dbCustomer = new customers()
             {
                 customerdni = model.dni,
                 customerlastname = model.lastname,
                 customername = model.name,
                 customeremail = model.email,
                 customerpassword = "warioo"
-
-
             };
 
 
-        await this.customerRepository.Add(entity);
+            await this.customerRepository.Add(dbCustomer);
 
         }
 
-        public bool DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            throw new NotImplementedException();
+            await this.customerRepository.DeleteById(id);
         }
 
         public IEnumerable<ICustomer> GetAll()
         {
-            throw new NotImplementedException();
+            IEnumerable<customers> customers = this.customerRepository.GetAll();
+            List<ICustomer> domainCustomers = new List<ICustomer>();
+
+            foreach (customers dbCustomer in customers)
+            {
+                domainCustomers.Add(new CustomerModel()
+                {
+                    dni = dbCustomer.customerdni,
+                    name = dbCustomer.customername,
+                    lastname = dbCustomer.customerlastname,
+                    email = dbCustomer.customeremail,
+                    id = dbCustomer.customerid
+                });
+            }
+
+            return domainCustomers;
         }
 
-        public ICustomer GetById(int id)
+        public async Task<ICustomer> GetById(int id)
         {
-            throw new NotImplementedException();
+            customers dbCustomer = await this.customerRepository.GetById(id);
+            ICustomer domainCustomer = new CustomerModel()
+            {
+                dni = dbCustomer.customerdni,
+                name = dbCustomer.customername,
+                lastname = dbCustomer.customerlastname,
+                email = dbCustomer.customeremail,
+                id = dbCustomer.customerid
+            };
+
+            return domainCustomer;
         }
 
-        public bool UpdateById(int id, ICustomer model)
+        public async Task UpdateById(int id, ICustomer model)
         {
-            throw new NotImplementedException();
+            customers dbCustomer = new customers()
+            {
+                customerdni = model.dni,
+                customerlastname = model.lastname,
+                customername = model.name,
+                customeremail = model.email,
+                customerpassword = "warioo"
+            };
+
+            await this.customerRepository.UpdateById(id, dbCustomer);
         }
     }
 }

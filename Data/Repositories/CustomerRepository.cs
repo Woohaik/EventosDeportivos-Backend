@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Repositories
@@ -35,22 +33,45 @@ namespace Data.Repositories
 
         public async Task DeleteById(int id)
         {
-            throw new NotImplementedException();
+            using (dbEntities ctx = new Data.dbEntities())
+            {
+                customers customer = await ctx.customers.FindAsync(id);
+                ctx.customers.Remove(customer);
+                await ctx.SaveChangesAsync();
+            }
         }
 
-        public async Task<IEnumerable<customers>> GetAll()
+        public IEnumerable<customers> GetAll()
         {
-            throw new NotImplementedException();
+            using (dbEntities ctx = new Data.dbEntities())
+            {
+                IEnumerable<customers> customers = ctx.customers.ToList();
+                return customers;
+            }
         }
 
         public async Task<customers> GetById(int id)
         {
-            throw new NotImplementedException();
+
+            using (dbEntities ctx = new Data.dbEntities())
+            {
+                customers customers = await ctx.customers.FindAsync(id);
+                return customers;
+            }
         }
 
         public async Task UpdateById(int id, customers entity)
         {
-            throw new NotImplementedException();
+            using (dbEntities ctx = new Data.dbEntities())
+            {
+                customers customers = await ctx.customers.FindAsync(id);
+                customers.customerdni = entity.customerdni;
+                customers.customeremail = entity.customeremail;
+                customers.customername = entity.customerlastname;
+                customers.customerpassword = entity.customerpassword;
+                customers.customerlastname = entity.customerlastname;
+                await ctx.SaveChangesAsync();
+            }
         }
     }
 }

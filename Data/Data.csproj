@@ -115,7 +115,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
+    <Compile Include="Repositories\EventRepository.cs" />
     <Compile Include="Repositories\ICustomerRepository.cs" />
+    <Compile Include="Repositories\IEventRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="reservations.cs">
       <DependentUpon>DEVMODEL.tt</DependentUpon>

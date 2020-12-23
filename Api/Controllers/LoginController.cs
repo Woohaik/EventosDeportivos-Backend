@@ -12,7 +12,9 @@ namespace Api.Controllers
 {
     public class LoginController : ApiController
     {
+
         private IAuthService customerAuthServices = CustomerService.Instance;
+
         [HttpPost]
         public HttpResponseMessage Login([FromBody] ICredential userCred)
         {
