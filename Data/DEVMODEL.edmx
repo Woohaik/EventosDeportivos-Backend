@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dockerdbModel.Store" Provider="Npgsql" ProviderManifestToken="13.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="customerid" />
+          </Key>
+          <Property Name="customerid" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customername" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="customerlastname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="customeremail" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="customerdni" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="customerpassword" Type="varchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="events">
+          <Key>
+            <PropertyRef Name="eventid" />
+          </Key>
+          <Property Name="eventid" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="eventlimit" Type="int4" Nullable="false" />
+          <Property Name="eventstart" Type="date" Nullable="false" />
+          <Property Name="eventfinish" Type="date" Nullable="false" />
+          <Property Name="eventtypecode" Type="int4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="eventtype">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="value" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="customersid" />
+            <PropertyRef Name="eventsid" />
+          </Key>
+          <Property Name="customersid" Type="int4" Nullable="false" />
+          <Property Name="eventsid" Type="int4" Nullable="false" />
+          <Property Name="cantidad" Type="int4" />
+        </EntityType>
+        <Association Name="fkevents739943">
+          <End Role="eventtype" Type="Self.eventtype" Multiplicity="1" />
+          <End Role="events" Type="Self.events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="eventtype">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="events">
+              <PropertyRef Name="eventtypecode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkreservatio864144">
+          <End Role="events" Type="Self.events" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="events">
+              <PropertyRef Name="eventid" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="eventsid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkreservatio907524">
+          <End Role="customers" Type="Self.customers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerid" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="customersid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dockerdbModelStoreContainer">
+          <EntitySet Name="customers" EntityType="Self.customers" Schema="public" store:Type="Tables" />
+          <EntitySet Name="events" EntityType="Self.events" Schema="public" store:Type="Tables" />
+          <EntitySet Name="eventtype" EntityType="Self.eventtype" Schema="public" store:Type="Tables" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" Schema="public" store:Type="Tables" />
+          <AssociationSet Name="fkevents739943" Association="Self.fkevents739943">
+            <End Role="eventtype" EntitySet="eventtype" />
+            <End Role="events" EntitySet="events" />
+          </AssociationSet>
+          <AssociationSet Name="fkreservatio864144" Association="Self.fkreservatio864144">
+            <End Role="events" EntitySet="events" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fkreservatio907524" Association="Self.fkreservatio907524">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dockerdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="customerid" />
+          </Key>
+          <Property Name="customerid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customername" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="customerlastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="customeremail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="customerdni" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="customerpassword" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.fkreservatio907524" FromRole="customers" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="events">
+          <Key>
+            <PropertyRef Name="eventid" />
+          </Key>
+          <Property Name="eventid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="eventlimit" Type="Int32" Nullable="false" />
+          <Property Name="eventstart" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="eventfinish" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="eventtypecode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="eventtype" Relationship="Self.fkevents739943" FromRole="events" ToRole="eventtype" />
+          <NavigationProperty Name="reservations" Relationship="Self.fkreservatio864144" FromRole="events" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="eventtype">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="value" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="events" Relationship="Self.fkevents739943" FromRole="eventtype" ToRole="events" />
+        </EntityType>
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="customersid" />
+            <PropertyRef Name="eventsid" />
+          </Key>
+          <Property Name="customersid" Type="Int32" Nullable="false" />
+          <Property Name="eventsid" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" />
+          <NavigationProperty Name="customers" Relationship="Self.fkreservatio907524" FromRole="reservations" ToRole="customers" />
+          <NavigationProperty Name="events" Relationship="Self.fkreservatio864144" FromRole="reservations" ToRole="events" />
+        </EntityType>
+        <Association Name="fkreservatio907524">
+          <End Role="customers" Type="Self.customers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerid" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="customersid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkevents739943">
+          <End Role="eventtype" Type="Self.eventtype" Multiplicity="1" />
+          <End Role="events" Type="Self.events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="eventtype">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="events">
+              <PropertyRef Name="eventtypecode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkreservatio864144">
+          <End Role="events" Type="Self.events" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="events">
+              <PropertyRef Name="eventid" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="eventsid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="customers" EntityType="Self.customers" />
+          <EntitySet Name="events" EntityType="Self.events" />
+          <EntitySet Name="eventtype" EntityType="Self.eventtype" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" />
+          <AssociationSet Name="fkreservatio907524" Association="Self.fkreservatio907524">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fkevents739943" Association="Self.fkevents739943">
+            <End Role="eventtype" EntitySet="eventtype" />
+            <End Role="events" EntitySet="events" />
+          </AssociationSet>
+          <AssociationSet Name="fkreservatio864144" Association="Self.fkreservatio864144">
+            <End Role="events" EntitySet="events" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dockerdbModelStoreContainer" CdmEntityContainer="dbEntities">
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="dockerdbModel.customers">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="customername" ColumnName="customername" />
+                <ScalarProperty Name="customerlastname" ColumnName="customerlastname" />
+                <ScalarProperty Name="customeremail" ColumnName="customeremail" />
+                <ScalarProperty Name="customerdni" ColumnName="customerdni" />
+                <ScalarProperty Name="customerpassword" ColumnName="customerpassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="events">
+            <EntityTypeMapping TypeName="dockerdbModel.events">
+              <MappingFragment StoreEntitySet="events">
+                <ScalarProperty Name="eventid" ColumnName="eventid" />
+                <ScalarProperty Name="eventname" ColumnName="eventname" />
+                <ScalarProperty Name="eventlimit" ColumnName="eventlimit" />
+                <ScalarProperty Name="eventstart" ColumnName="eventstart" />
+                <ScalarProperty Name="eventfinish" ColumnName="eventfinish" />
+                <ScalarProperty Name="eventtypecode" ColumnName="eventtypecode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="eventtype">
+            <EntityTypeMapping TypeName="dockerdbModel.eventtype">
+              <MappingFragment StoreEntitySet="eventtype">
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="value" ColumnName="value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservations">
+            <EntityTypeMapping TypeName="dockerdbModel.reservations">
+              <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="customersid" ColumnName="customersid" />
+                <ScalarProperty Name="eventsid" ColumnName="eventsid" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
