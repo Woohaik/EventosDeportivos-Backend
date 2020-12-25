@@ -9,9 +9,9 @@ namespace Domain.Services
     public interface ICrud<T>
     {
         Task Add(T model);
-        bool DeleteById(int id);
-        bool UpdateById(int id, T model);
+        Task DeleteById(int id);
+        Task UpdateById(int id, T model);
         IEnumerable<T> GetAll();
-        T GetById(int id);
+        Task<T> GetById(int id);
     }
 }
