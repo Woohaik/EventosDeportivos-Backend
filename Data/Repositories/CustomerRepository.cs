@@ -60,6 +60,15 @@ namespace Data.Repositories
             }
         }
 
+        public customers GetByEmail(string email)
+        {
+            using (dbEntities ctx = new Data.dbEntities())
+            {
+                customers customers = ctx.customers.Where(key => key.customeremail == email).FirstOrDefault();
+                return customers;
+            }
+        }
+
         public async Task UpdateById(int id, customers entity)
         {
             using (dbEntities ctx = new Data.dbEntities())

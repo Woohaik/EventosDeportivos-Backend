@@ -22,12 +22,10 @@ namespace Domain.Services.Customer.crud
                 customerlastname = model.lastname,
                 customername = model.name,
                 customeremail = model.email,
-                customerpassword = "warioo"
+                customerpassword = this.hashPassword(model.password)
             };
 
-
             await this.customerRepository.Add(dbCustomer);
-
         }
 
         public async Task DeleteById(int id)
@@ -44,7 +42,7 @@ namespace Domain.Services.Customer.crud
             {
                 domainCustomers.Add(new CustomerModel()
                 {
-                    
+
                     dni = dbCustomer.customerdni,
                     name = dbCustomer.customername,
                     lastname = dbCustomer.customerlastname,
@@ -79,7 +77,6 @@ namespace Domain.Services.Customer.crud
                 customerlastname = model.lastname,
                 customername = model.name,
                 customeremail = model.email,
-                customerpassword = "warioo"
             };
 
             await this.customerRepository.UpdateById(id, dbCustomer);

@@ -18,51 +18,79 @@ namespace Api.Controllers
 
         private ICrud<IEvent> eventCrudServices = EventService.Instance;
 
-
         public async Task<HttpResponseMessage> GetCustomers()
         {
-            IEnumerable<IEvent> allEvents = null;
-            Thread hilo = new Thread(() => allEvents = this.eventCrudServices.GetAll());
-
-            await Task.Run(() =>
-            {
-                hilo.Start();
-                hilo.Join();
-            });
-            return Request.CreateResponse(HttpStatusCode.OK, allEvents);
+            return await Task.Run(() =>
+             {
+                 try
+                 {
+                     IEnumerable<IEvent> allEvents = null;
+                     allEvents = this.eventCrudServices.GetAll();
+                     return Request.CreateResponse(HttpStatusCode.OK, allEvents);
+                 }
+                 catch (Exception ex)
+                 {
+                     return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                 }
+             });
         }
 
         public async Task<HttpResponseMessage> GetEvent(int id)
         {
-            IEvent theEvent = await this.eventCrudServices.GetById(id);
-            return Request.CreateResponse(HttpStatusCode.OK, theEvent);
+
+            try
+            {
+                IEvent theEvent = await this.eventCrudServices.GetById(id);
+                return Request.CreateResponse(HttpStatusCode.OK, theEvent);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
 
         [HttpPost]
         public async Task<HttpResponseMessage> RegisterEvent([FromBody] EventModel theEvent)
         {
-            
-
-            await this.eventCrudServices.Add(theEvent);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.eventCrudServices.Add(theEvent);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
 
         [HttpPut]
         public async Task<HttpResponseMessage> UpdateCustomer(int id, [FromBody] EventModel theEvent)
         {
-            await this.eventCrudServices.UpdateById(id, theEvent);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.eventCrudServices.UpdateById(id, theEvent);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
         [HttpDelete]
         public async Task<HttpResponseMessage> DeletCustomer(int id)
         {
-            await this.eventCrudServices.DeleteById(id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.eventCrudServices.DeleteById(id);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
-
-
     }
 }

@@ -8,5 +8,6 @@ namespace Data.Repositories
 {
     public interface ICustomerRepository : IRepository<customers>
     {
+        customers GetByEmail(string email);
     }
 }
