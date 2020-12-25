@@ -1,37 +1,99 @@
 ﻿using Domain.Models.IEventContracts;
 using System;
+
+using Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Repositories;
+using Domain.Models.Event;
 
 namespace Domain.Services.Event.crud
 {
     public class EventCrud : ICrud<IEvent>
     {
-        public Task Add(IEvent model)
+        protected EventRepository eventRepository = EventRepository.Instance;
+
+        public async Task Add(IEvent model)
         {
-            throw new NotImplementedException();
+
+
+    
+            int theEventCode = (int)model.eventType;
+            
+
+
+            events events = new events()
+            {
+                eventname = model.name,
+                eventstart = model.start,
+                eventfinish = model.finish,
+                eventlimit = model.limit,
+                eventtypecode = (int)model.eventType
+            };
+
+
+            await this.eventRepository.Add(events);
         }
 
-        public Task DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            throw new NotImplementedException();
+            await this.eventRepository.DeleteById(id);
         }
 
         public IEnumerable<IEvent> GetAll()
         {
-            throw new NotImplementedException();
+            IEnumerable<events> dbEvents = this.eventRepository.GetAll();
+            List<IEvent> domainEvents = new List<IEvent>();
+
+
+            foreach (events dbEvent in dbEvents)
+            {
+                domainEvents.Add(new EventModel()
+                {
+                    id = dbEvent.eventid,
+                    name = dbEvent.eventname,
+                    start = dbEvent.eventstart,
+                    finish = dbEvent.eventfinish,
+                    limit = dbEvent.eventlimit,
+                    eventType = (EventTypes)dbEvent.eventtypecode,
+
+                });
+
+            }
+            return domainEvents;
+
         }
 
-        public Task<IEvent> GetById(int id)
+        public async Task<IEvent> GetById(int id)
         {
-            throw new NotImplementedException();
+            events dbEvent = await this.eventRepository.GetById(id);
+            IEvent domainEvent = new EventModel()
+            {
+                id = dbEvent.eventid,
+                name = dbEvent.eventname,
+                start = dbEvent.eventstart,
+                finish = dbEvent.eventfinish,
+                limit = dbEvent.eventlimit,
+                eventType = (EventTypes)dbEvent.eventtypecode
+            };
+
+            return domainEvent;
         }
 
-        public Task UpdateById(int id, IEvent model)
+        public async Task UpdateById(int id, IEvent model)
         {
-            throw new NotImplementedException();
+            events dbEvent = new events()
+            {
+                eventname = model.name,
+                eventstart = model.start,
+                eventfinish = model.finish,
+                eventlimit = model.limit,
+                eventtypecode = (int)model.eventType
+            };
+
+            await this.eventRepository.UpdateById(id, dbEvent);
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Domain.Models.Customer;
+﻿using Api.Validators;
+using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services;
 using Domain.Services.Customer;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,12 +18,13 @@ namespace Api.Controllers
     public class CustomerController : ApiController
     {
         private ICrud<ICustomer> customerCrudServices = CustomerService.Instance;
+        private AnotationValidator<CustomerModel> validator = new AnotationValidator<CustomerModel>();
 
         public async Task<HttpResponseMessage> GetCustomers()
         {
             IEnumerable<ICustomer> allCustomers = null;
             Thread hilo = new Thread(() => allCustomers = this.customerCrudServices.GetAll());
-    
+
             await Task.Run(() =>
             {
                 hilo.Start();
@@ -39,8 +42,17 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> RegisterCustomer([FromBody] CustomerModel customer)
         {
-            await this.customerCrudServices.Add(customer);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                validator.validate(customer);
+                await this.customerCrudServices.Add(customer);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         [HttpPut]

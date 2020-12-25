@@ -42,6 +42,8 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> RegisterEvent([FromBody] EventModel theEvent)
         {
+            
+
             await this.eventCrudServices.Add(theEvent);
             return Request.CreateResponse(HttpStatusCode.OK);
         }

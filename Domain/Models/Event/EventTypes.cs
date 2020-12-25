@@ -11,6 +11,5 @@ namespace Domain.Models.Event
         Evento1,
         Evento2,
         Evento3,
-        Evento4
     }
 }

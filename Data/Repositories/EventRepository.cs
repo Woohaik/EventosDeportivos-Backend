@@ -51,6 +51,7 @@ namespace Data.Repositories
             using (dbEntities ctx = new Data.dbEntities())
             {
                 IEnumerable<events> events = ctx.events.ToList();
+
                 return events;
             }
         }
@@ -64,9 +65,18 @@ namespace Data.Repositories
             }
         }
 
-        public Task UpdateById(int id, events entity)
+        public async Task UpdateById(int id, events entity)
         {
-            throw new NotImplementedException();
+            using (dbEntities ctx = new Data.dbEntities())
+            {
+                events events = await ctx.events.FindAsync(id);
+                events.eventname = entity.eventname;
+                events.eventstart = entity.eventstart;
+                events.eventfinish = entity.eventfinish;
+                events.eventlimit = entity.eventlimit;
+                events.eventtypecode = entity.eventtypecode;
+                await ctx.SaveChangesAsync();
+            }
         }
     }
 }

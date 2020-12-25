@@ -44,6 +44,7 @@ namespace Domain.Services.Customer.crud
             {
                 domainCustomers.Add(new CustomerModel()
                 {
+                    
                     dni = dbCustomer.customerdni,
                     name = dbCustomer.customername,
                     lastname = dbCustomer.customerlastname,
