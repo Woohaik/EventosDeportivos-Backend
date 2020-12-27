@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Data
+namespace Data.DBMODELS
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace Data
         public string customeremail { get; set; }
         public string customerdni { get; set; }
         public string customerpassword { get; set; }
+        public string refreshtoken { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<reservations> reservations { get; set; }

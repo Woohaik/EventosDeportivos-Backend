@@ -23,28 +23,21 @@ namespace Api.Controllers
 
         public async Task<HttpResponseMessage> GetCustomers()
         {
-
-            return await Task.Run(() =>
-             {
-
-                 try
-                 {
-                     IEnumerable<ICustomer> allCustomers = null;
-                     allCustomers = this.customerCrudServices.GetAll();
-                     List<CustomerDto> allCustomersDto = new List<CustomerDto>();
-                     foreach (ICustomer customer in allCustomers)
-                     {
-                         allCustomersDto.Add(new CustomerDto(customer));
-                     }
-                     return Request.CreateResponse(HttpStatusCode.OK, allCustomersDto);
-                 }
-                 catch (Exception ex)
-                 {
-                     return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
-                 }
-
-             });
-
+            try
+            {
+                IEnumerable<ICustomer> allCustomers = null;
+                allCustomers = await this.customerCrudServices.GetAll();
+                List<CustomerDto> allCustomersDto = new List<CustomerDto>();
+                foreach (ICustomer customer in allCustomers)
+                {
+                    allCustomersDto.Add(new CustomerDto(customer));
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, allCustomersDto);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
         public async Task<HttpResponseMessage> GetCustomer(int id)

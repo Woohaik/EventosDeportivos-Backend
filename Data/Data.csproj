@@ -89,29 +89,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="customers.cs">
-      <DependentUpon>DEVMODEL.tt</DependentUpon>
+    <Compile Include="DBMODELS\customers.cs">
+      <DependentUpon>ENTITYS.tt</DependentUpon>
     </Compile>
-    <Compile Include="DEVMODEL.Context.cs">
+    <Compile Include="DBMODELS\ENTITYS.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DEVMODEL.Context.tt</DependentUpon>
+      <DependentUpon>ENTITYS.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DEVMODEL.cs">
+    <Compile Include="DBMODELS\ENTITYS.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DEVMODEL.tt</DependentUpon>
+      <DependentUpon>ENTITYS.tt</DependentUpon>
     </Compile>
-    <Compile Include="DEVMODEL.Designer.cs">
+    <Compile Include="DBMODELS\ENTITYS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DEVMODEL.edmx</DependentUpon>
+      <DependentUpon>ENTITYS.edmx</DependentUpon>
     </Compile>
-    <Compile Include="events.cs">
-      <DependentUpon>DEVMODEL.tt</DependentUpon>
+    <Compile Include="DBMODELS\events.cs">
+      <DependentUpon>ENTITYS.tt</DependentUpon>
     </Compile>
-    <Compile Include="eventtype.cs">
-      <DependentUpon>DEVMODEL.tt</DependentUpon>
+    <Compile Include="DBMODELS\eventtype.cs">
+      <DependentUpon>ENTITYS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBMODELS\reservations.cs">
+      <DependentUpon>ENTITYS.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
@@ -119,18 +122,17 @@
     <Compile Include="Repositories\ICustomerRepository.cs" />
     <Compile Include="Repositories\IEventRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="reservations.cs">
-      <DependentUpon>DEVMODEL.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Repositories\IReservationRepository.cs" />
+    <Compile Include="Repositories\ReservationRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="DEVMODEL.edmx">
+    <EntityDeploy Include="DBMODELS\ENTITYS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DEVMODEL.Designer.cs</LastGenOutput>
+      <LastGenOutput>ENTITYS.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DEVMODEL.edmx.diagram">
-      <DependentUpon>DEVMODEL.edmx</DependentUpon>
+    <None Include="DBMODELS\ENTITYS.edmx.diagram">
+      <DependentUpon>ENTITYS.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -138,18 +140,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DEVMODEL.Context.tt">
+    <Content Include="DBMODELS\ENTITYS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DEVMODEL.edmx</DependentUpon>
-      <LastGenOutput>DEVMODEL.Context.cs</LastGenOutput>
+      <DependentUpon>ENTITYS.edmx</DependentUpon>
+      <LastGenOutput>ENTITYS.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DEVMODEL.tt">
+    <Content Include="DBMODELS\ENTITYS.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DEVMODEL.edmx</DependentUpon>
-      <LastGenOutput>DEVMODEL.cs</LastGenOutput>
+      <DependentUpon>ENTITYS.edmx</DependentUpon>
+      <LastGenOutput>ENTITYS.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

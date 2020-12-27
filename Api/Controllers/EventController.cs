@@ -2,6 +2,7 @@
 using Domain.Models.IEventContracts;
 using Domain.Services;
 using Domain.Services.Event;
+using Domain.Services.IServicesContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,23 +17,22 @@ namespace Api.Controllers
     public class EventController : ApiController
     {
 
-        private ICrud<IEvent> eventCrudServices = EventService.Instance;
+        private IEventService eventCrudServices = EventService.Instance;
 
         public async Task<HttpResponseMessage> GetCustomers()
         {
-            return await Task.Run(() =>
-             {
-                 try
-                 {
-                     IEnumerable<IEvent> allEvents = null;
-                     allEvents = this.eventCrudServices.GetAll();
-                     return Request.CreateResponse(HttpStatusCode.OK, allEvents);
-                 }
-                 catch (Exception ex)
-                 {
-                     return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
-                 }
-             });
+
+            try
+            {
+                IEnumerable<IEvent> allEvents = null;
+                allEvents = await this.eventCrudServices.GetAll();
+                return Request.CreateResponse(HttpStatusCode.OK, allEvents);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         public async Task<HttpResponseMessage> GetEvent(int id)

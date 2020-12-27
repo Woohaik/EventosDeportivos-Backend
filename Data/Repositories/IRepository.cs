@@ -5,7 +5,7 @@ namespace Data.Repositories
 {
     public interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
         Task DeleteById(int id);
         Task UpdateById(int id, T entity);

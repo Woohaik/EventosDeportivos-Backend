@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
-    public interface ICustomerRepository : IRepository<customers>
+    public interface IReservationRepository : IRepository<reservations>
     {
-        customers GetByEmail(string email);
-        Task<string> GetRefreshToken(int id);
     }
 }

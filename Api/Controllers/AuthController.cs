@@ -24,7 +24,8 @@ namespace Api.Controllers
             try
             {
                 validator.authvalidator(Request.Headers, customerAuthServices);
-                IAuthentication theAuthentication = await this.customerAuthServices.GetAuthenticatedCustomer(Convert.ToInt32(Request.Headers.GetValues("CustomerId").First()));
+                int customerID = Convert.ToInt32(Request.Headers.GetValues("CustomerId").First());
+                IAuthentication theAuthentication = await this.customerAuthServices.GetAuthenticatedCustomer(customerID);
                 if (theAuthentication == null) throw new Exception("No existe Cliente con ese Id");
                 return Request.CreateResponse(HttpStatusCode.OK, theAuthentication);
 

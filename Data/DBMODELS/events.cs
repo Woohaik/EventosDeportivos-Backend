@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Data
+namespace Data.DBMODELS
 {
     using System;
     using System.Collections.Generic;

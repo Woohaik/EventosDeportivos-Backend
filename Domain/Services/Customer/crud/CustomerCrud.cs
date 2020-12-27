@@ -1,5 +1,5 @@
 ﻿
-using Data;
+using Data.DBMODELS;
 using Data.Repositories;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
@@ -42,9 +42,9 @@ namespace Domain.Services.Customer.crud
             await this.customerRepository.DeleteById(id);
         }
 
-        public IEnumerable<ICustomer> GetAll()
+        public async Task<IEnumerable<ICustomer>> GetAll()
         {
-            IEnumerable<customers> customers = this.customerRepository.GetAll();
+            IEnumerable<customers> customers = await this.customerRepository.GetAll();
             List<ICustomer> domainCustomers = new List<ICustomer>();
 
             foreach (customers dbCustomer in customers)

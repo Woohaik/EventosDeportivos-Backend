@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BCrypt;
-using Data;
+using BCrypt.Net;
+using Data.DBMODELS;
 using Domain.Services.Customer.crud;
 
 namespace Domain.Services.Customer.auth
@@ -20,9 +20,7 @@ namespace Domain.Services.Customer.auth
 
         public async Task<IAuthentication> GetAuthenticatedCustomer(int id)
         {
-
-            // Buscar por el cliente En bbdd
-            ICustomer customer = await this.GetById(id);
+            ICustomer customer = await this.GetById(id);    // Buscar por el cliente En bbdd
 
             IAuthentication theAuth = new AuthenticationModel()
             {
@@ -33,9 +31,24 @@ namespace Domain.Services.Customer.auth
             return theAuth;
         }
 
-        public IWholeAuth LoginCustomer(ICredential credentials)
+        private string generateTokenByModel(ICustomer model, bool isRefresh)
+        {
+            return this.jwt.GenerateToken(model, isRefresh);
+        }
+
+        public async Task<IWholeAuth> LoginCustomer(ICredential credentials)
         {
             customers dbCustomer = this.customerRepository.GetByEmail(credentials.email);
+            if (!this.validatePassword(credentials.password, dbCustomer.customerpassword)) throw new Exception("Contraseña Incorrecta");
+            return await saveNewRefreshToken(dbCustomer);
+        }
+
+        protected bool validatePassword(string password, string correctHash) => BCrypt.Net.BCrypt.Verify(password, correctHash);
+
+        public string validateToken(string token) => this.jwt.ValidateToken(token) ? this.jwt.decodeToken(token) : null;
+
+        private async Task<AuthenticationModel> saveNewRefreshToken(customers dbCustomer)
+        {
             ICustomer model = new CustomerModel()
             {
                 id = dbCustomer.customerid,
@@ -44,37 +57,23 @@ namespace Domain.Services.Customer.auth
                 lastname = dbCustomer.customerlastname,
                 name = dbCustomer.customername,
             };
-            if (!this.validatePassword(credentials.password, dbCustomer.customerpassword)) throw new Exception("Contraseña Incorrecta");
-
-            string refreshToken = this.jwt.GenerateToken(model, true);
-
-            // Guardar Token en BBDD
-
-
+            string newRefreshToken = generateTokenByModel(model, true);
+            dbCustomer.refreshtoken = newRefreshToken;
+            await this.customerRepository.UpdateById(dbCustomer.customerid, dbCustomer);
             return new AuthenticationModel()
             {
                 customer = model,
-                token = jwt.GenerateToken(model, false),
-                refreshToken = refreshToken
+                token = generateTokenByModel(model, false),
+                refreshToken = newRefreshToken
             };
         }
 
-        protected bool validatePassword(string password, string correctHash)
+        public async Task<IWholeAuth> RefreshToken(int id, string oldToken)
         {
-            return BCrypt.Net.BCrypt.Verify(password, correctHash);
-        }
-
-        public string validateToken(string token)
-        {
-            if (this.jwt.ValidateToken(token))
-            {
-                return this.jwt.decodeToken(token);
-            }
-            else
-            {
-                return null;
-            }
-
+            customers dbCustomer = await this.customerRepository.GetById(id);    // Buscarlo en ddbb
+            string dbRefreshToken = dbCustomer.refreshtoken;
+            if (!dbRefreshToken.Equals(oldToken)) throw new Exception("Refresh Token No Valida");
+            return await saveNewRefreshToken(dbCustomer);
         }
     }
 

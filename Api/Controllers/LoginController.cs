@@ -1,4 +1,5 @@
-﻿using Api.Validators;
+﻿using Api.Dto;
+using Api.Validators;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services.Customer;
@@ -21,26 +22,21 @@ namespace Api.Controllers
         private IAuthService customerAuthServices = CustomerService.Instance;
         private AnotationValidator<CredentialModel> validator = AnotationValidator<CredentialModel>.Instance;
 
-
-
         [HttpPost]
         public async Task<HttpResponseMessage> Login([FromBody] CredentialModel userCred)
         {
-            validator.validate(userCred);
-            IWholeAuth authModel = null;
+            try
+            {
+                validator.validate(userCred);
+                IWholeAuth authModel = await customerAuthServices.LoginCustomer(userCred);
+                AuthTokenDto authCustomerTokensDto = new AuthTokenDto(authModel);
+                return Request.CreateResponse(HttpStatusCode.OK, authCustomerTokensDto);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
 
-            return await Task.Run(() =>
-             {
-                 try
-                 {
-                     authModel = this.customerAuthServices.LoginCustomer(userCred);
-                     return Request.CreateResponse(HttpStatusCode.OK, authModel);
-                 }
-                 catch (Exception ex)
-                 {
-                     return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
-                 }
-             });
 
         }
     }
