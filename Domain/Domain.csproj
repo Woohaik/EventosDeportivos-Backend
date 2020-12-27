@@ -65,6 +65,7 @@
     <Compile Include="Models\ICustomerContracts\IAuthentication.cs" />
     <Compile Include="Models\ICustomerContracts\ICredential.cs" />
     <Compile Include="Models\ICustomerContracts\ICustomer.cs" />
+    <Compile Include="Models\ICustomerContracts\IWholeAuth.cs" />
     <Compile Include="Models\IEventContracts\IEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Customer\auth\CustomerAuth.cs" />

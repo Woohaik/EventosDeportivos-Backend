@@ -9,40 +9,33 @@ using System.Text;
 using System.Threading.Tasks;
 using BCrypt;
 using Data;
+using Domain.Services.Customer.crud;
 
 namespace Domain.Services.Customer.auth
 {
-    public class CustomerAuth : JWT, IAuthService
+    public class CustomerAuth : CustomerCrud, IAuthService
     {
 
-        protected ICustomerRepository customerRepository = CustomerRepository.Instance;
+        private JWT jwt = new JWT();
 
-        public ICustomer AuthenticateCustomer(string token)
+        public async Task<IAuthentication> GetAuthenticatedCustomer(int id)
         {
-            bool istokenValid = this.ValidateToken(token);
-            if (istokenValid)
-            {
-                ICustomer model = new CustomerModel()
-                {
-                    id = 5,
-                    dni = "d",
-                    email = "themail@gmail.com",
-                    lastname = "thelast",
-                    name = "Wiii"
 
-                };
-                return model;
-            }
-            else
+            // Buscar por el cliente En bbdd
+            ICustomer customer = await this.GetById(id);
+
+            IAuthentication theAuth = new AuthenticationModel()
             {
-                return null;
-            }
+                customer = customer,
+                token = jwt.GenerateToken(customer, false),
+            };
+
+            return theAuth;
         }
 
-        public IAuthentication LoginCustomer(ICredential credentials)
+        public IWholeAuth LoginCustomer(ICredential credentials)
         {
             customers dbCustomer = this.customerRepository.GetByEmail(credentials.email);
-            if (dbCustomer == null) throw new Exception("Usuario no encontrado");
             ICustomer model = new CustomerModel()
             {
                 id = dbCustomer.customerid,
@@ -52,26 +45,36 @@ namespace Domain.Services.Customer.auth
                 name = dbCustomer.customername,
             };
             if (!this.validatePassword(credentials.password, dbCustomer.customerpassword)) throw new Exception("Contraseña Incorrecta");
+
+            string refreshToken = this.jwt.GenerateToken(model, true);
+
+            // Guardar Token en BBDD
+
+
             return new AuthenticationModel()
             {
                 customer = model,
-                token = this.GenerateToken(model)
+                token = jwt.GenerateToken(model, false),
+                refreshToken = refreshToken
             };
-        }
-
-        private string getRandomSalt()
-        {
-            return BCrypt.Net.BCrypt.GenerateSalt(12);
-        }
-
-        protected string hashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password, getRandomSalt());
         }
 
         protected bool validatePassword(string password, string correctHash)
         {
             return BCrypt.Net.BCrypt.Verify(password, correctHash);
+        }
+
+        public string validateToken(string token)
+        {
+            if (this.jwt.ValidateToken(token))
+            {
+                return this.jwt.decodeToken(token);
+            }
+            else
+            {
+                return null;
+            }
+
         }
     }
 

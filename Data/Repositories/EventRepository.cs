@@ -41,6 +41,7 @@ namespace Data.Repositories
             using (dbEntities ctx = new Data.dbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
+                if (theEvent == null) throw new Exception("Evento No Encontrado");
                 ctx.events.Remove(theEvent);
                 await ctx.SaveChangesAsync();
             }
@@ -61,6 +62,7 @@ namespace Data.Repositories
             using (dbEntities ctx = new Data.dbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
+                if (theEvent == null) throw new Exception("Evento No Encontrado");
                 return theEvent;
             }
         }
@@ -69,12 +71,13 @@ namespace Data.Repositories
         {
             using (dbEntities ctx = new Data.dbEntities())
             {
-                events events = await ctx.events.FindAsync(id);
-                events.eventname = entity.eventname;
-                events.eventstart = entity.eventstart;
-                events.eventfinish = entity.eventfinish;
-                events.eventlimit = entity.eventlimit;
-                events.eventtypecode = entity.eventtypecode;
+                events theEvent = await ctx.events.FindAsync(id);
+                if (theEvent == null) throw new Exception("Evento No Encontrado");
+                theEvent.eventname = entity.eventname;
+                theEvent.eventstart = entity.eventstart;
+                theEvent.eventfinish = entity.eventfinish;
+                theEvent.eventlimit = entity.eventlimit;
+                theEvent.eventtypecode = entity.eventtypecode;
                 await ctx.SaveChangesAsync();
             }
         }

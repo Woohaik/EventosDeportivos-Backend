@@ -1,4 +1,5 @@
-﻿using Api.Validators;
+﻿using Api.Dto;
+using Api.Validators;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services;
@@ -30,7 +31,12 @@ namespace Api.Controllers
                  {
                      IEnumerable<ICustomer> allCustomers = null;
                      allCustomers = this.customerCrudServices.GetAll();
-                     return Request.CreateResponse(HttpStatusCode.OK, allCustomers);
+                     List<CustomerDto> allCustomersDto = new List<CustomerDto>();
+                     foreach (ICustomer customer in allCustomers)
+                     {
+                         allCustomersDto.Add(new CustomerDto(customer));
+                     }
+                     return Request.CreateResponse(HttpStatusCode.OK, allCustomersDto);
                  }
                  catch (Exception ex)
                  {
@@ -46,7 +52,7 @@ namespace Api.Controllers
             try
             {
                 ICustomer customer = await this.customerCrudServices.GetById(id);
-                return Request.CreateResponse(HttpStatusCode.OK, customer);
+                return Request.CreateResponse(HttpStatusCode.OK, new CustomerDto(customer));
             }
             catch (Exception ex)
             {
@@ -84,9 +90,8 @@ namespace Api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
             }
         }
-
         [HttpDelete]
-        public async Task<HttpResponseMessage> DeletCustomer(int id)
+        public async Task<HttpResponseMessage> DeleteCustomer(int id)
         {
             try
             {

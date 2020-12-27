@@ -9,7 +9,8 @@ namespace Domain.Services.IServicesContracts
 {
     public interface IAuthService
     {
-        ICustomer AuthenticateCustomer(string token);
-        IAuthentication LoginCustomer(ICredential credentials);
+        Task<IAuthentication> GetAuthenticatedCustomer(int token);
+        IWholeAuth LoginCustomer(ICredential credentials);
+        string validateToken(string token);
     }
 }

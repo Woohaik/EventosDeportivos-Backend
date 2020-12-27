@@ -1,5 +1,6 @@
 ﻿
 using Data;
+using Data.Repositories;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services.Customer.auth;
@@ -11,8 +12,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Customer.crud
 {
-    public class CustomerCrud : CustomerAuth, ICrud<ICustomer>
+    public class CustomerCrud : ICrud<ICustomer>
     {
+
+        protected ICustomerRepository customerRepository = CustomerRepository.Instance;
+
+        private string hashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
+        }
+
         public async Task Add(ICustomer model)
         {
 

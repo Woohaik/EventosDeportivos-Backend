@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Models.ICustomerContracts
 {
-    public interface IAuthentication
+    public interface IWholeAuth : IAuthentication
     {
-
-        string token { get; set; }
-        ICustomer customer { get; set; }
-
+        string refreshToken { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace Api.Controllers
         public async Task<HttpResponseMessage> Login([FromBody] CredentialModel userCred)
         {
             validator.validate(userCred);
-            IAuthentication authModel = null;
+            IWholeAuth authModel = null;
 
             return await Task.Run(() =>
              {

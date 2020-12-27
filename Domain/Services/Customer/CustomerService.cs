@@ -1,4 +1,5 @@
 ﻿using Domain.Models.ICustomerContracts;
+using Domain.Services.Customer.auth;
 using Domain.Services.Customer.crud;
 using Domain.Services.IServicesContracts;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Customer
 {
-    public class CustomerService : CustomerCrud, ICustomerService
+    public class CustomerService : CustomerAuth, ICustomerService
     {
         private CustomerService() { }
         private static CustomerService instance = null;

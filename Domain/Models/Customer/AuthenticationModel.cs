@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Models.Customer
 {
-    public class AuthenticationModel : IAuthentication
+    public class AuthenticationModel : IWholeAuth
     {
         public string token { get; set; }
         public ICustomer customer { get; set; }
+        public string refreshToken { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,8 +36,9 @@ namespace Data.Repositories
         {
             using (dbEntities ctx = new Data.dbEntities())
             {
-                customers customer = await ctx.customers.FindAsync(id);
-                ctx.customers.Remove(customer);
+                customers customers = await ctx.customers.FindAsync(id);
+                if (customers == null) throw new Exception("Cliente No Encontrado");
+                ctx.customers.Remove(customers);
                 await ctx.SaveChangesAsync();
             }
         }
@@ -56,6 +58,7 @@ namespace Data.Repositories
             using (dbEntities ctx = new Data.dbEntities())
             {
                 customers customers = await ctx.customers.FindAsync(id);
+                if (customers == null) throw new Exception("Cliente No Encontrado");
                 return customers;
             }
         }
@@ -65,6 +68,7 @@ namespace Data.Repositories
             using (dbEntities ctx = new Data.dbEntities())
             {
                 customers customers = ctx.customers.Where(key => key.customeremail == email).FirstOrDefault();
+                if (customers == null) throw new Exception("Cliente No Encontrado");
                 return customers;
             }
         }
@@ -74,6 +78,7 @@ namespace Data.Repositories
             using (dbEntities ctx = new Data.dbEntities())
             {
                 customers customers = await ctx.customers.FindAsync(id);
+                if (customers == null) throw new Exception("Cliente No Encontrado");
                 customers.customerdni = entity.customerdni;
                 customers.customeremail = entity.customeremail;
                 customers.customername = entity.customerlastname;
