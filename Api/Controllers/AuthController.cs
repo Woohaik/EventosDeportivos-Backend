@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Api.Validators;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
@@ -14,19 +16,27 @@ namespace Api.Controllers
     {
 
         private IAuthService customerAuthServices = CustomerService.Instance;
+        private AuthValidator validator = new AuthValidator();
 
         [HttpPost]
-        public HttpResponseMessage Authenticate()
+        public async Task<HttpResponseMessage> Authenticate()
         {
-            var headers = Request.Headers;
-
-            if (headers.Contains("sportToken"))
+            try
             {
-                ICustomer customer = this.customerAuthServices.AuthenticateCustomer(headers.GetValues("sportToken").First());
-                if (customer != null) return Request.CreateResponse(HttpStatusCode.OK, customer);
+                validator.authvalidator(Request.Headers, customerAuthServices);
+                int customerID = Convert.ToInt32(Request.Headers.GetValues("CustomerId").First());
+                IAuthentication theAuthentication = await this.customerAuthServices.GetAuthenticatedCustomer(customerID);
+                if (theAuthentication == null) throw new Exception("No existe Cliente con ese Id");
+                return Request.CreateResponse(HttpStatusCode.OK, theAuthentication);
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using Domain.Models.Event;
+﻿using Api.Validators;
+using Domain.Models.Event;
 using Domain.Models.IEventContracts;
 using Domain.Services;
 using Domain.Services.Event;
+using Domain.Services.IServicesContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,53 +18,82 @@ namespace Api.Controllers
     public class EventController : ApiController
     {
 
-        private ICrud<IEvent> eventCrudServices = EventService.Instance;
-
+        private IEventService eventCrudServices = EventService.Instance;
+        private AnotationValidator<EventModel> validator = AnotationValidator<EventModel>.Instance;
 
         public async Task<HttpResponseMessage> GetCustomers()
         {
-            IEnumerable<IEvent> allEvents = null;
-            Thread hilo = new Thread(() => allEvents = this.eventCrudServices.GetAll());
 
-            await Task.Run(() =>
+            try
             {
-                hilo.Start();
-                hilo.Join();
-            });
-            return Request.CreateResponse(HttpStatusCode.OK, allEvents);
+                IEnumerable<IEvent> allEvents = null;
+                allEvents = await this.eventCrudServices.GetAll();
+                return Request.CreateResponse(HttpStatusCode.OK, allEvents);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         public async Task<HttpResponseMessage> GetEvent(int id)
         {
-            IEvent theEvent = await this.eventCrudServices.GetById(id);
-            return Request.CreateResponse(HttpStatusCode.OK, theEvent);
+
+            try
+            {
+                IEvent theEvent = await this.eventCrudServices.GetById(id);
+                return Request.CreateResponse(HttpStatusCode.OK, theEvent);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
 
         [HttpPost]
         public async Task<HttpResponseMessage> RegisterEvent([FromBody] EventModel theEvent)
         {
-            
-
-            await this.eventCrudServices.Add(theEvent);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                validator.validate(theEvent);
+                await this.eventCrudServices.Add(theEvent);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
 
         [HttpPut]
         public async Task<HttpResponseMessage> UpdateCustomer(int id, [FromBody] EventModel theEvent)
         {
-            await this.eventCrudServices.UpdateById(id, theEvent);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.eventCrudServices.UpdateById(id, theEvent);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
         [HttpDelete]
         public async Task<HttpResponseMessage> DeletCustomer(int id)
         {
-            await this.eventCrudServices.DeleteById(id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.eventCrudServices.DeleteById(id);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
-
-
     }
 }

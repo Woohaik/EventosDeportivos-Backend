@@ -7,16 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Data
+namespace Data.DBMODELS
 {
     using System;
     using System.Collections.Generic;
     
     public partial class reservations
     {
+        public int reservarionid { get; set; }
         public int customersid { get; set; }
         public int eventsid { get; set; }
-        public Nullable<int> cantidad { get; set; }
+        public int cantidad { get; set; }
     
         public virtual customers customers { get; set; }
         public virtual events events { get; set; }

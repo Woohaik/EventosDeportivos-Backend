@@ -15,6 +15,7 @@
           <Property Name="customeremail" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="customerdni" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="customerpassword" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="refreshtoken" Type="varchar" MaxLength="10000" />
         </EntityType>
         <EntityType Name="events">
           <Key>
@@ -36,9 +37,11 @@
         </EntityType>
         <EntityType Name="reservations">
           <Key>
+            <PropertyRef Name="reservarionid" />
             <PropertyRef Name="customersid" />
             <PropertyRef Name="eventsid" />
           </Key>
+          <Property Name="reservarionid" Type="int4" Nullable="false" />
           <Property Name="customersid" Type="int4" Nullable="false" />
           <Property Name="eventsid" Type="int4" Nullable="false" />
           <Property Name="cantidad" Type="int4" />
@@ -116,6 +119,7 @@
           <Property Name="customeremail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="customerdni" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="customerpassword" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="refreshtoken" Type="String" MaxLength="10000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="reservations" Relationship="Self.fkreservatio907524" FromRole="customers" ToRole="reservations" />
         </EntityType>
         <EntityType Name="events">
@@ -141,9 +145,11 @@
         </EntityType>
         <EntityType Name="reservations">
           <Key>
+            <PropertyRef Name="reservarionid" />
             <PropertyRef Name="customersid" />
             <PropertyRef Name="eventsid" />
           </Key>
+          <Property Name="reservarionid" Type="Int32" Nullable="false" />
           <Property Name="customersid" Type="Int32" Nullable="false" />
           <Property Name="eventsid" Type="Int32" Nullable="false" />
           <Property Name="cantidad" Type="Int32" />
@@ -190,7 +196,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="dockerdbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="customers" EntityType="Self.customers" />
           <EntitySet Name="events" EntityType="Self.events" />
           <EntitySet Name="eventtype" EntityType="Self.eventtype" />
@@ -213,7 +219,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="dockerdbModelStoreContainer" CdmEntityContainer="dbEntities">
+        <EntityContainerMapping StorageEntityContainer="dockerdbModelStoreContainer" CdmEntityContainer="dockerdbEntities">
           <EntitySetMapping Name="customers">
             <EntityTypeMapping TypeName="dockerdbModel.customers">
               <MappingFragment StoreEntitySet="customers">
@@ -223,6 +229,7 @@
                 <ScalarProperty Name="customeremail" ColumnName="customeremail" />
                 <ScalarProperty Name="customerdni" ColumnName="customerdni" />
                 <ScalarProperty Name="customerpassword" ColumnName="customerpassword" />
+                <ScalarProperty Name="refreshtoken" ColumnName="refreshtoken" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -249,6 +256,7 @@
           <EntitySetMapping Name="reservations">
             <EntityTypeMapping TypeName="dockerdbModel.reservations">
               <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="reservarionid" ColumnName="reservarionid" />
                 <ScalarProperty Name="customersid" ColumnName="customersid" />
                 <ScalarProperty Name="eventsid" ColumnName="eventsid" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />

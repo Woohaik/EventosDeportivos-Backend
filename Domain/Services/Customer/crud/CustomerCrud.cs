@@ -1,5 +1,6 @@
 ﻿
-using Data;
+using Data.DBMODELS;
+using Data.Repositories;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services.Customer.auth;
@@ -11,8 +12,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Customer.crud
 {
-    public class CustomerCrud : CustomerAuth, ICrud<ICustomer>
+    public class CustomerCrud : ICrud<ICustomer>
     {
+
+        protected ICustomerRepository customerRepository = CustomerRepository.Instance;
+
+
         public async Task Add(ICustomer model)
         {
 
@@ -22,29 +27,26 @@ namespace Domain.Services.Customer.crud
                 customerlastname = model.lastname,
                 customername = model.name,
                 customeremail = model.email,
-                customerpassword = "warioo"
+                customerpassword = this.hashPassword(model.password)
             };
 
-
             await this.customerRepository.Add(dbCustomer);
-
         }
 
-        public async Task DeleteById(int id)
-        {
+        public async Task DeleteById(int id) =>
             await this.customerRepository.DeleteById(id);
-        }
 
-        public IEnumerable<ICustomer> GetAll()
+
+        public async Task<IEnumerable<ICustomer>> GetAll()
         {
-            IEnumerable<customers> customers = this.customerRepository.GetAll();
+            IEnumerable<customers> customers = await this.customerRepository.GetAll();
             List<ICustomer> domainCustomers = new List<ICustomer>();
 
             foreach (customers dbCustomer in customers)
             {
                 domainCustomers.Add(new CustomerModel()
                 {
-                    
+
                     dni = dbCustomer.customerdni,
                     name = dbCustomer.customername,
                     lastname = dbCustomer.customerlastname,
@@ -79,10 +81,14 @@ namespace Domain.Services.Customer.crud
                 customerlastname = model.lastname,
                 customername = model.name,
                 customeremail = model.email,
-                customerpassword = "warioo"
             };
 
             await this.customerRepository.UpdateById(id, dbCustomer);
+        }
+
+        private string hashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
         }
     }
 }

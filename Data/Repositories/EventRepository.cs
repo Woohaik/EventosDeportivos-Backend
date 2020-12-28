@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.DBMODELS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace Data.Repositories
 
         public async Task Add(events entity)
         {
-            using (dbEntities ctx = new Data.dbEntities())
+            using (dockerdbEntities ctx = new dockerdbEntities())
             {
                 ctx.events.Add(entity);
                 await ctx.SaveChangesAsync();
@@ -38,43 +39,50 @@ namespace Data.Repositories
 
         public async Task DeleteById(int id)
         {
-            using (dbEntities ctx = new Data.dbEntities())
+            using (dockerdbEntities ctx = new dockerdbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
+                if (theEvent == null) throw new Exception("Evento No Encontrado");
                 ctx.events.Remove(theEvent);
                 await ctx.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<events> GetAll()
+        public async Task<IEnumerable<events>> GetAll()
         {
-            using (dbEntities ctx = new Data.dbEntities())
+            return await Task.Run(() =>
             {
-                IEnumerable<events> events = ctx.events.ToList();
+                using (dockerdbEntities ctx = new dockerdbEntities())
+                {
+                    IEnumerable<events> events = ctx.events.ToList();
 
-                return events;
-            }
+                    return events;
+                }
+            });
+
         }
 
         public async Task<events> GetById(int id)
         {
-            using (dbEntities ctx = new Data.dbEntities())
+            using (dockerdbEntities ctx = new dockerdbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
+                if (theEvent == null) throw new Exception("Evento No Encontrado");
                 return theEvent;
             }
         }
 
         public async Task UpdateById(int id, events entity)
         {
-            using (dbEntities ctx = new Data.dbEntities())
+            using (dockerdbEntities ctx = new dockerdbEntities())
             {
-                events events = await ctx.events.FindAsync(id);
-                events.eventname = entity.eventname;
-                events.eventstart = entity.eventstart;
-                events.eventfinish = entity.eventfinish;
-                events.eventlimit = entity.eventlimit;
-                events.eventtypecode = entity.eventtypecode;
+                events theEvent = await ctx.events.FindAsync(id);
+                if (theEvent == null) throw new Exception("Evento No Encontrado");
+                theEvent.eventname = entity.eventname;
+                theEvent.eventstart = entity.eventstart;
+                theEvent.eventfinish = entity.eventfinish;
+                theEvent.eventlimit = entity.eventlimit;
+                theEvent.eventtypecode = entity.eventtypecode;
                 await ctx.SaveChangesAsync();
             }
         }

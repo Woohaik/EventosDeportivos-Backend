@@ -28,5 +28,8 @@ namespace Domain.Models.Customer
         [Required(ErrorMessage = "DNI Requerido")]
         [StringLength(maximumLength: 10, MinimumLength = 10, ErrorMessage = "DNI Debe tener 10 digitos")]
         public string dni { get; set; }
+
+        [Required(ErrorMessage = "Password Requerido")]
+        public string password { get; set; }
     }
 }

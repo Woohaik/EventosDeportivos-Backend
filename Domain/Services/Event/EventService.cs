@@ -1,4 +1,5 @@
 ﻿using Domain.Services.Event.crud;
+using Domain.Services.IServicesContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Event
 {
-    public class EventService : EventCrud
+    public class EventService : EventCrud, IEventService
     {
         private static EventService instance = null;
         private EventService() { }

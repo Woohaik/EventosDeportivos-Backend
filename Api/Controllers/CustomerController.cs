@@ -1,8 +1,10 @@
-﻿using Api.Validators;
+﻿using Api.Dto;
+using Api.Validators;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services;
 using Domain.Services.Customer;
+using Domain.Services.IServicesContracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,26 +19,40 @@ namespace Api.Controllers
 {
     public class CustomerController : ApiController
     {
-        private ICrud<ICustomer> customerCrudServices = CustomerService.Instance;
-        private AnotationValidator<CustomerModel> validator = new AnotationValidator<CustomerModel>();
+        private ICustomerService customerCrudServices = CustomerService.Instance;
+        private AnotationValidator<CustomerModel> validator = AnotationValidator<CustomerModel>.Instance;
 
         public async Task<HttpResponseMessage> GetCustomers()
         {
-            IEnumerable<ICustomer> allCustomers = null;
-            Thread hilo = new Thread(() => allCustomers = this.customerCrudServices.GetAll());
-
-            await Task.Run(() =>
+            try
             {
-                hilo.Start();
-                hilo.Join();
-            });
-            return Request.CreateResponse(HttpStatusCode.OK, allCustomers);
+                IEnumerable<ICustomer> allCustomers = null;
+                allCustomers = await this.customerCrudServices.GetAll();
+                List<CustomerDto> allCustomersDto = new List<CustomerDto>();
+                foreach (ICustomer customer in allCustomers)
+                {
+                    allCustomersDto.Add(new CustomerDto(customer));
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, allCustomersDto);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
         public async Task<HttpResponseMessage> GetCustomer(int id)
         {
-            ICustomer customer = await this.customerCrudServices.GetById(id);
-            return Request.CreateResponse(HttpStatusCode.OK, customer);
+            try
+            {
+                ICustomer customer = await this.customerCrudServices.GetById(id);
+                return Request.CreateResponse(HttpStatusCode.OK, new CustomerDto(customer));
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         [HttpPost]
@@ -58,15 +74,28 @@ namespace Api.Controllers
         [HttpPut]
         public async Task<HttpResponseMessage> UpdateCustomer(int id, [FromBody] CustomerModel customer)
         {
-            await this.customerCrudServices.UpdateById(id, customer);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.customerCrudServices.UpdateById(id, customer);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
-
         [HttpDelete]
-        public async Task<HttpResponseMessage> DeletCustomer(int id)
+        public async Task<HttpResponseMessage> DeleteCustomer(int id)
         {
-            await this.customerCrudServices.DeleteById(id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                await this.customerCrudServices.DeleteById(id);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
     }
 }

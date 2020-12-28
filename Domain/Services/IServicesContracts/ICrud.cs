@@ -11,7 +11,7 @@ namespace Domain.Services
         Task Add(T model);
         Task DeleteById(int id);
         Task UpdateById(int id, T model);
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
     }
 }

@@ -13,5 +13,6 @@ namespace Domain.Models.ICustomerContracts
         string lastname { get; set; }
         string email { get; set; }
         string dni { get; set; }
+        string password { get; set; }
     }
 }
