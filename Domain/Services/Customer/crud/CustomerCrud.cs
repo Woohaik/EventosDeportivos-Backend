@@ -17,10 +17,6 @@ namespace Domain.Services.Customer.crud
 
         protected ICustomerRepository customerRepository = CustomerRepository.Instance;
 
-        private string hashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
-        }
 
         public async Task Add(ICustomer model)
         {
@@ -37,10 +33,9 @@ namespace Domain.Services.Customer.crud
             await this.customerRepository.Add(dbCustomer);
         }
 
-        public async Task DeleteById(int id)
-        {
+        public async Task DeleteById(int id) =>
             await this.customerRepository.DeleteById(id);
-        }
+
 
         public async Task<IEnumerable<ICustomer>> GetAll()
         {
@@ -89,6 +84,11 @@ namespace Domain.Services.Customer.crud
             };
 
             await this.customerRepository.UpdateById(id, dbCustomer);
+        }
+
+        private string hashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Models.Event;
+﻿using Api.Validators;
+using Domain.Models.Event;
 using Domain.Models.IEventContracts;
 using Domain.Services;
 using Domain.Services.Event;
@@ -18,6 +19,7 @@ namespace Api.Controllers
     {
 
         private IEventService eventCrudServices = EventService.Instance;
+        private AnotationValidator<EventModel> validator = AnotationValidator<EventModel>.Instance;
 
         public async Task<HttpResponseMessage> GetCustomers()
         {
@@ -55,6 +57,7 @@ namespace Api.Controllers
         {
             try
             {
+                validator.validate(theEvent);
                 await this.eventCrudServices.Add(theEvent);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

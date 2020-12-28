@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Domain.Models.Customer;
+using Domain.Models.Event;
+using Domain.Models.Reservation;
+using Domain.Services.IServicesContracts;
+using Domain.Services.Reservation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,9 +15,11 @@ namespace Api.Controllers
 {
     public class ReservationController : ApiController
     {
+        private IReservationService reservationCrudServices = ReservationService.Instance;
 
         public async Task<HttpResponseMessage> GetReservations()
         {
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
@@ -27,9 +34,22 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> CreateReservation()
+        public async Task<HttpResponseMessage> CreateReservation([FromBody] ReservationModel reservation)
         {
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+
+
+                reservation.reservationCustomer = new CustomerModel() { id = reservation.customerId };
+                reservation.reservationEvent = new EventModel() { id = reservation.eventId };
+                await this.reservationCrudServices.Add(reservation);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         [HttpDelete]

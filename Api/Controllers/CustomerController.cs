@@ -4,6 +4,7 @@ using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;
 using Domain.Services;
 using Domain.Services.Customer;
+using Domain.Services.IServicesContracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ namespace Api.Controllers
 {
     public class CustomerController : ApiController
     {
-        private ICrud<ICustomer> customerCrudServices = CustomerService.Instance;
+        private ICustomerService customerCrudServices = CustomerService.Instance;
         private AnotationValidator<CustomerModel> validator = AnotationValidator<CustomerModel>.Instance;
 
         public async Task<HttpResponseMessage> GetCustomers()
