@@ -9,5 +9,6 @@ namespace Data.Repositories
 {
     public interface IReservationRepository : IRepository<reservations>
     {
+        Task<int> GetTotalReservationsByEventId(int id);
     }
 }

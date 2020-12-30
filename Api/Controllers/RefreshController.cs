@@ -27,7 +27,7 @@ namespace Api.Controllers
                 validator.authvalidator(header, customerAuthServices);
                 int customerID = Convert.ToInt32(header.GetValues("CustomerId").First());
                 IWholeAuth newAuthTokens = await this.customerAuthServices.RefreshToken(customerID, header.GetValues("sportToken").First());
-                AuthTokenDto authCustomerTokensDto = new AuthTokenDto(newAuthTokens);
+                AuthRefreshDto authCustomerTokensDto = new AuthRefreshDto(newAuthTokens);
                 return Request.CreateResponse(HttpStatusCode.OK, authCustomerTokensDto);
 
             }

@@ -40,6 +40,7 @@ namespace Domain.Services.Reservation.crud
             List<IReservation> domainReservation = new List<IReservation>();
             foreach (reservations dbReservation in dbReservations)
             {
+
                 domainReservation.Add(new ReservationModel()
                 {
                     quantity = dbReservation.quantity,
@@ -75,6 +76,7 @@ namespace Domain.Services.Reservation.crud
             reservations dbReservation = await this.reservationRepository.GetById(id);
             IReservation domainReservation = new ReservationModel()
             {
+                
                 quantity = dbReservation.quantity,
                 reservationCustomer = new CustomerModel()
                 {

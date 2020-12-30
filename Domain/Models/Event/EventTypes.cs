@@ -8,8 +8,10 @@ namespace Domain.Models.Event
 {
     public enum EventTypes
     {
-        Evento1,
-        Evento2,
-        Evento3,
+        NULL,
+        FUTBOL,
+        BALONCESTO,
+        VOLEIBOL,
+        ATLETISMO
     }
 }

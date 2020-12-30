@@ -50,6 +50,7 @@ namespace Domain.Services.Event.crud
                     finish = dbEvent.eventfinish,
                     limit = dbEvent.eventlimit,
                     eventType = (EventTypes)dbEvent.eventtypecode,
+                    
 
                 });
 
@@ -70,6 +71,8 @@ namespace Domain.Services.Event.crud
                 limit = dbEvent.eventlimit,
                 eventType = (EventTypes)dbEvent.eventtypecode
             };
+
+
 
             return domainEvent;
         }

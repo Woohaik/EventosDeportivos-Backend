@@ -6,16 +6,13 @@ using System.Web;
 
 namespace Api.Dto
 {
-    public class AuthTokenDto
+    public class AuthRefreshDto : AuthDto
     {
-        public readonly CustomerDto customer;
-        public readonly string token;
+
         public readonly string refreshToken;
 
-        public AuthTokenDto(IWholeAuth authTokens)
+        public AuthRefreshDto(IWholeAuth authTokens) : base(authTokens)
         {
-            this.customer = new CustomerDto(authTokens.customer);
-            this.token = authTokens.token;
             this.refreshToken = authTokens.refreshToken;
         }
     }

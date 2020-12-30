@@ -29,7 +29,7 @@ namespace Api.Controllers
             {
                 validator.validate(userCred);
                 IWholeAuth authModel = await customerAuthServices.LoginCustomer(userCred);
-                AuthTokenDto authCustomerTokensDto = new AuthTokenDto(authModel);
+                AuthRefreshDto authCustomerTokensDto = new AuthRefreshDto(authModel);
                 return Request.CreateResponse(HttpStatusCode.OK, authCustomerTokensDto);
             }
             catch (Exception ex)

@@ -133,9 +133,12 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RefreshController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
-    <Compile Include="Dto\AuthTokenDto.cs" />
+    <Compile Include="Dto\AuthDto.cs" />
+    <Compile Include="Dto\AuthRefreshDto.cs" />
     <Compile Include="Dto\CustomerDto.cs" />
     <Compile Include="Dto\ErrorDto.cs" />
+    <Compile Include="Dto\EventDto.cs" />
+    <Compile Include="Dto\ReservationDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

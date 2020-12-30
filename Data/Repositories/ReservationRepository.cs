@@ -52,6 +52,11 @@ namespace Data.Repositories
                  using (dbEntities ctx = new dbEntities())
                  {
                      IEnumerable<reservations> reservations = ctx.reservations.ToList();
+                     foreach (reservations reservation in reservations)
+                     {
+                         reservation.events = reservation.events;
+                         reservation.customers = reservation.customers;
+                     }
                      return reservations;
                  }
              });
@@ -64,8 +69,33 @@ namespace Data.Repositories
                 reservations reservation = await ctx.reservations.FindAsync(id);
                 if (reservation == null) throw new Exception("Reserva No Encontrada");
 
+                reservation.events = reservation.events;
+
+                reservation.customers = reservation.customers;
+
                 return reservation;
             }
+        }
+
+
+        public async Task<int> GetTotalReservationsByEventId(int id)
+        {
+            return await Task.Run(() =>
+            {
+                using (dbEntities ctx = new dbEntities())
+                {
+                    IEnumerable<reservations> reservations = ctx.reservations.Where(enti => enti.eventsid == id);
+                    int sum = 0;
+                    foreach (reservations reservation in reservations)
+                    {
+                        sum += reservation.quantity;
+                    }
+
+
+                    return sum;
+                }
+            });
+
         }
 
         public Task UpdateById(int id, reservations entity)

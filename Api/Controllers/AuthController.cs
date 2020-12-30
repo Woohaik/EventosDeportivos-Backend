@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Api.Validators;
 using System.Threading.Tasks;
+using Api.Dto;
 
 namespace Api.Controllers
 {
@@ -27,8 +28,7 @@ namespace Api.Controllers
                 int customerID = Convert.ToInt32(Request.Headers.GetValues("CustomerId").First());
                 IAuthentication theAuthentication = await this.customerAuthServices.GetAuthenticatedCustomer(customerID);
                 if (theAuthentication == null) throw new Exception("No existe Cliente con ese Id");
-                return Request.CreateResponse(HttpStatusCode.OK, theAuthentication);
-
+                return Request.CreateResponse(HttpStatusCode.OK, new AuthDto(theAuthentication));
             }
             catch (Exception ex)
             {
