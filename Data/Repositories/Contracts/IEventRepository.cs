@@ -1,5 +1,5 @@
 ﻿
-using Data.DBMODELS;
+using Data.DB;
 
 namespace Data.Repositories
 {

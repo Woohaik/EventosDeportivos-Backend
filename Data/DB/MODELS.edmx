@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dockerdbModel.Store" Provider="Npgsql" ProviderManifestToken="13.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="dbModel.Store" Provider="Npgsql" ProviderManifestToken="13.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="customers">
           <Key>
             <PropertyRef Name="customerid" />
@@ -38,13 +38,12 @@
         <EntityType Name="reservations">
           <Key>
             <PropertyRef Name="reservarionid" />
-            <PropertyRef Name="customersid" />
-            <PropertyRef Name="eventsid" />
           </Key>
-          <Property Name="reservarionid" Type="int4" Nullable="false" />
+          <Property Name="reservarionid" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customersid" Type="int4" Nullable="false" />
           <Property Name="eventsid" Type="int4" Nullable="false" />
-          <Property Name="cantidad" Type="int4" />
+          <Property Name="quantity" Type="int4" Nullable="false" />
+          <Property Name="boughtday" Type="date" Nullable="false" />
         </EntityType>
         <Association Name="fkevents739943">
           <End Role="eventtype" Type="Self.eventtype" Multiplicity="1" />
@@ -86,7 +85,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dockerdbModelStoreContainer">
+        <EntityContainer Name="dbModelStoreContainer">
           <EntitySet Name="customers" EntityType="Self.customers" Schema="public" store:Type="Tables" />
           <EntitySet Name="events" EntityType="Self.events" Schema="public" store:Type="Tables" />
           <EntitySet Name="eventtype" EntityType="Self.eventtype" Schema="public" store:Type="Tables" />
@@ -108,7 +107,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="dockerdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="customers">
           <Key>
             <PropertyRef Name="customerid" />
@@ -146,13 +145,12 @@
         <EntityType Name="reservations">
           <Key>
             <PropertyRef Name="reservarionid" />
-            <PropertyRef Name="customersid" />
-            <PropertyRef Name="eventsid" />
           </Key>
-          <Property Name="reservarionid" Type="Int32" Nullable="false" />
+          <Property Name="reservarionid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="customersid" Type="Int32" Nullable="false" />
           <Property Name="eventsid" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="boughtday" Type="DateTime" Precision="0" Nullable="false" />
           <NavigationProperty Name="customers" Relationship="Self.fkreservatio907524" FromRole="reservations" ToRole="customers" />
           <NavigationProperty Name="events" Relationship="Self.fkreservatio864144" FromRole="reservations" ToRole="events" />
         </EntityType>
@@ -196,7 +194,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dockerdbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="customers" EntityType="Self.customers" />
           <EntitySet Name="events" EntityType="Self.events" />
           <EntitySet Name="eventtype" EntityType="Self.eventtype" />
@@ -219,9 +217,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="dockerdbModelStoreContainer" CdmEntityContainer="dockerdbEntities">
+        <EntityContainerMapping StorageEntityContainer="dbModelStoreContainer" CdmEntityContainer="dbEntities">
           <EntitySetMapping Name="customers">
-            <EntityTypeMapping TypeName="dockerdbModel.customers">
+            <EntityTypeMapping TypeName="dbModel.customers">
               <MappingFragment StoreEntitySet="customers">
                 <ScalarProperty Name="customerid" ColumnName="customerid" />
                 <ScalarProperty Name="customername" ColumnName="customername" />
@@ -234,7 +232,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="events">
-            <EntityTypeMapping TypeName="dockerdbModel.events">
+            <EntityTypeMapping TypeName="dbModel.events">
               <MappingFragment StoreEntitySet="events">
                 <ScalarProperty Name="eventid" ColumnName="eventid" />
                 <ScalarProperty Name="eventname" ColumnName="eventname" />
@@ -246,7 +244,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="eventtype">
-            <EntityTypeMapping TypeName="dockerdbModel.eventtype">
+            <EntityTypeMapping TypeName="dbModel.eventtype">
               <MappingFragment StoreEntitySet="eventtype">
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="value" ColumnName="value" />
@@ -254,12 +252,13 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="reservations">
-            <EntityTypeMapping TypeName="dockerdbModel.reservations">
+            <EntityTypeMapping TypeName="dbModel.reservations">
               <MappingFragment StoreEntitySet="reservations">
                 <ScalarProperty Name="reservarionid" ColumnName="reservarionid" />
                 <ScalarProperty Name="customersid" ColumnName="customersid" />
                 <ScalarProperty Name="eventsid" ColumnName="eventsid" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="boughtday" ColumnName="boughtday" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

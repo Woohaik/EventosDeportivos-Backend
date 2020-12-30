@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Data.DBMODELS
+namespace Data.DB
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,8 @@ namespace Data.DBMODELS
         public int reservarionid { get; set; }
         public int customersid { get; set; }
         public int eventsid { get; set; }
-        public int cantidad { get; set; }
+        public int quantity { get; set; }
+        public System.DateTime boughtday { get; set; }
     
         public virtual customers customers { get; set; }
         public virtual events events { get; set; }

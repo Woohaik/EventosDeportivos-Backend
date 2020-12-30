@@ -1,5 +1,5 @@
 ﻿
-using Data.DBMODELS;
+using Data.DB;
 using Data.Repositories;
 using Domain.Models.Customer;
 using Domain.Models.ICustomerContracts;

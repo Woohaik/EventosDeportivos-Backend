@@ -19,5 +19,6 @@ namespace Domain.Models.Reservation
         public IEvent reservationEvent { get; set; }
 
         public int quantity { get; set; }
+        public DateTime boughtTime { get; set; }
     }
 }

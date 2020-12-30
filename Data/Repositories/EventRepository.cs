@@ -1,4 +1,4 @@
-﻿using Data.DBMODELS;
+﻿using Data.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace Data.Repositories
 
         public async Task Add(events entity)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 ctx.events.Add(entity);
                 await ctx.SaveChangesAsync();
@@ -39,7 +39,7 @@ namespace Data.Repositories
 
         public async Task DeleteById(int id)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
                 if (theEvent == null) throw new Exception("Evento No Encontrado");
@@ -52,7 +52,7 @@ namespace Data.Repositories
         {
             return await Task.Run(() =>
             {
-                using (dockerdbEntities ctx = new dockerdbEntities())
+                using (dbEntities ctx = new dbEntities())
                 {
                     IEnumerable<events> events = ctx.events.ToList();
 
@@ -64,7 +64,7 @@ namespace Data.Repositories
 
         public async Task<events> GetById(int id)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
                 if (theEvent == null) throw new Exception("Evento No Encontrado");
@@ -74,7 +74,7 @@ namespace Data.Repositories
 
         public async Task UpdateById(int id, events entity)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 events theEvent = await ctx.events.FindAsync(id);
                 if (theEvent == null) throw new Exception("Evento No Encontrado");

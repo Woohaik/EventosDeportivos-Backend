@@ -89,50 +89,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBMODELS\customers.cs">
-      <DependentUpon>ENTITYS.tt</DependentUpon>
+    <Compile Include="DB\customers.cs">
+      <DependentUpon>MODELS.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBMODELS\ENTITYS.Context.cs">
+    <Compile Include="DB\events.cs">
+      <DependentUpon>MODELS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\eventtype.cs">
+      <DependentUpon>MODELS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\MODELS.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ENTITYS.Context.tt</DependentUpon>
+      <DependentUpon>MODELS.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBMODELS\ENTITYS.cs">
+    <Compile Include="DB\MODELS.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ENTITYS.tt</DependentUpon>
+      <DependentUpon>MODELS.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBMODELS\ENTITYS.Designer.cs">
+    <Compile Include="DB\MODELS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ENTITYS.edmx</DependentUpon>
+      <DependentUpon>MODELS.edmx</DependentUpon>
     </Compile>
-    <Compile Include="DBMODELS\events.cs">
-      <DependentUpon>ENTITYS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBMODELS\eventtype.cs">
-      <DependentUpon>ENTITYS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBMODELS\reservations.cs">
-      <DependentUpon>ENTITYS.tt</DependentUpon>
+    <Compile Include="DB\reservations.cs">
+      <DependentUpon>MODELS.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\EventRepository.cs" />
-    <Compile Include="Repositories\ICustomerRepository.cs" />
-    <Compile Include="Repositories\IEventRepository.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\IReservationRepository.cs" />
+    <Compile Include="Repositories\Contracts\ICustomerRepository.cs" />
+    <Compile Include="Repositories\Contracts\IEventRepository.cs" />
+    <Compile Include="Repositories\Contracts\IRepository.cs" />
+    <Compile Include="Repositories\Contracts\IReservationRepository.cs" />
     <Compile Include="Repositories\ReservationRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="DBMODELS\ENTITYS.edmx">
+    <EntityDeploy Include="DB\MODELS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ENTITYS.Designer.cs</LastGenOutput>
+      <LastGenOutput>MODELS.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DBMODELS\ENTITYS.edmx.diagram">
-      <DependentUpon>ENTITYS.edmx</DependentUpon>
+    <None Include="DB\MODELS.edmx.diagram">
+      <DependentUpon>MODELS.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -140,15 +140,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DBMODELS\ENTITYS.Context.tt">
+    <Content Include="DB\MODELS.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ENTITYS.edmx</DependentUpon>
-      <LastGenOutput>ENTITYS.Context.cs</LastGenOutput>
+      <DependentUpon>MODELS.edmx</DependentUpon>
+      <LastGenOutput>MODELS.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DBMODELS\ENTITYS.tt">
+    <Content Include="DB\MODELS.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ENTITYS.edmx</DependentUpon>
-      <LastGenOutput>ENTITYS.cs</LastGenOutput>
+      <DependentUpon>MODELS.edmx</DependentUpon>
+      <LastGenOutput>MODELS.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

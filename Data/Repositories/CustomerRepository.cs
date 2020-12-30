@@ -1,4 +1,4 @@
-﻿using Data.DBMODELS;
+﻿using Data.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace Data.Repositories
         public async Task Add(customers entity)
         {
 
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 ctx.customers.Add(entity);
                 await ctx.SaveChangesAsync();
@@ -36,7 +36,7 @@ namespace Data.Repositories
 
         public async Task DeleteById(int id)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 customers customers = await ctx.customers.FindAsync(id);
                 if (customers == null) throw new Exception("Cliente No Encontrado");
@@ -49,7 +49,7 @@ namespace Data.Repositories
         {
             return await Task.Run(() =>
               {
-                  using (dockerdbEntities ctx = new dockerdbEntities())
+                  using (dbEntities ctx = new dbEntities())
                   {
                       IEnumerable<customers> customers = ctx.customers.ToList();
                       return customers;
@@ -61,7 +61,7 @@ namespace Data.Repositories
         public async Task<customers> GetById(int id)
         {
 
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 customers customers = await ctx.customers.FindAsync(id);
                 if (customers == null) throw new Exception("Cliente No Encontrado");
@@ -72,7 +72,7 @@ namespace Data.Repositories
 
         public customers GetByEmail(string email)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 customers customers = ctx.customers.Where(key => key.customeremail == email).FirstOrDefault();
                 if (customers == null) throw new Exception("Cliente No Encontrado");
@@ -89,7 +89,7 @@ namespace Data.Repositories
 
         public async Task UpdateById(int id, customers entity)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 customers customers = await ctx.customers.FindAsync(id);
                 if (customers == null) throw new Exception("Cliente No Encontrado");

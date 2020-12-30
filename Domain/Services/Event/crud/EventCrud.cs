@@ -1,7 +1,7 @@
 ﻿using Domain.Models.IEventContracts;
 using System;
 
-using Data.DBMODELS;
+using Data.DB;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

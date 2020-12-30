@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
-using Data.DBMODELS;
+using Data.DB;
 using Domain.Services.Customer.crud;
 
 namespace Domain.Services.Customer.auth
