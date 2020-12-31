@@ -2,6 +2,7 @@
 using Domain.Models.IEventContracts;
 using Domain.Services.Event.crud;
 using Domain.Services.IServicesContracts;
+using Domain.Services.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,14 @@ namespace Domain.Services.Event
                 }
                 return instance;
             }
+        }
+
+        public new async Task<IEvent> GetById(int id)
+        {
+            IEvent theEvent = await base.GetById(id);
+            int freeSpaces = await ReservationService.Instance.freeReservationOfEvent(id, theEvent.limit);
+            theEvent.freeSpaces = freeSpaces;
+            return theEvent;
         }
 
         public new async Task Add(IEvent model)

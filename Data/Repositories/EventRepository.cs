@@ -62,6 +62,9 @@ namespace Data.Repositories
 
         }
 
+
+
+
         public async Task<events> GetById(int id)
         {
             using (dbEntities ctx = new dbEntities())

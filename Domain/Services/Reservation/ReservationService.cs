@@ -16,7 +16,6 @@ namespace Domain.Services.Reservation
     {
         private static SemaphoreSlim mySemaphore = new SemaphoreSlim(1);
         private static ReservationService instance = null;
-        private IEventService eventService = EventService.Instance;
         private ReservationService() { }
         public static ReservationService Instance
         {
@@ -30,19 +29,29 @@ namespace Domain.Services.Reservation
             }
         }
 
+        public async Task<int> freeReservationOfEvent(int eventid, int limit)
+        {
+            int totalReservations = await this.reservationRepository.GetTotalReservationsByEventId(eventid);
+            return limit - totalReservations;
+        }
+
         public async new Task Add(IReservation model)
         {
-            IEvent eventToReserve = await eventService.GetById(model.reservationEvent.id);
-            DateTime now = DateTime.Now;
-            if (now > eventToReserve.finish) throw new Exception("El evento ya ha finalizado");
 
             try
             {
                 await mySemaphore.WaitAsync();
-                ////////////////////////////////
-                int totalReservations = await this.reservationRepository.GetTotalReservationsByEventId(eventToReserve.id);
-                int totalSpacesRequired = model.quantity + totalReservations;
-                if (eventToReserve.limit < totalSpacesRequired) throw new Exception($"No hay suficientes entradas libres para realizar esta reserva solo quedan {eventToReserve.limit - totalReservations}");
+                ////////////////////////////////  
+                IEvent eventToReserve = await EventService.Instance.GetById(model.reservationEvent.id);
+
+                DateTime now = DateTime.Now;
+
+                if (now > eventToReserve.finish) throw new Exception("El evento ya ha finalizado");
+
+
+                if (eventToReserve.freeSpaces <= 0) throw new Exception("No hay entradas disponibles");
+                if (model.quantity > eventToReserve.freeSpaces) throw new Exception($"No hay suficientes entradas libres para realizar esta reserva solo quedan {eventToReserve.freeSpaces}");
+
                 await base.Add(model);
 
             }

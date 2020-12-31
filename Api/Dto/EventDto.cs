@@ -9,7 +9,7 @@ namespace Api.Dto
     public class EventDto
     {
         public int id { get; set; }
-        public bool isfull { get; set; }
+        public int freeSpaces { get; set; }
         public string name { get; set; }
         public int limit { get; set; }
         public DateTime start { get; set; }
@@ -24,7 +24,7 @@ namespace Api.Dto
             this.start = theEvent.start;
             this.finish = theEvent.finish;
             this.eventType = (int)theEvent.eventType;
-            /// TODO : Agregar isFull
+            this.freeSpaces = theEvent.freeSpaces;
         }
     }
 }

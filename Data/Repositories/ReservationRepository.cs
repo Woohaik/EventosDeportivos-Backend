@@ -91,7 +91,6 @@ namespace Data.Repositories
                         sum += reservation.quantity;
                     }
 
-
                     return sum;
                 }
             });
