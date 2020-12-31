@@ -35,6 +35,7 @@ namespace Api.Controllers
                 {
                     allEventsDto.Add(new EventDto(theEvent));
                 }
+    
                 return Request.CreateResponse(HttpStatusCode.OK, allEventsDto);
             }
             catch (Exception ex)
@@ -88,7 +89,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<HttpResponseMessage> DeletCustomer(int id)
+        public async Task<HttpResponseMessage> DeleteCustomer(int id)
         {
             try
             {
