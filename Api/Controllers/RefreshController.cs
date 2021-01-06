@@ -10,9 +10,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Api.Controllers
 {
+
+    [EnableCors("*", "*", "*")]
     public class RefreshController : ApiController
     {
         private IAuthService customerAuthServices = CustomerService.Instance;
@@ -33,7 +36,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, ex);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, new ErrorDto(ex));
             }
 
         }

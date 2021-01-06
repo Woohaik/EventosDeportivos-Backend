@@ -10,9 +10,11 @@ using System.Web.Http;
 using Api.Validators;
 using System.Threading.Tasks;
 using Api.Dto;
+using System.Web.Http.Cors;
 
 namespace Api.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class AuthController : ApiController
     {
 
@@ -32,7 +34,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, ex);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, new ErrorDto(ex));
             }
 
 

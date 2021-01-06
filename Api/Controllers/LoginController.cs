@@ -13,9 +13,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Api.Controllers
 {
+
+    [EnableCors("*", "*", "*")]
     public class LoginController : ApiController
     {
 
@@ -34,7 +37,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorDto(ex));
             }
 
 

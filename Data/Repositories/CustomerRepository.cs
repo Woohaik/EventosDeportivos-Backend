@@ -70,14 +70,29 @@ namespace Data.Repositories
             }
         }
 
-        public customers GetByEmail(string email)
+        public async Task<customers> GetByEmail(string email)
         {
-            using (dbEntities ctx = new dbEntities())
+            return await Task.Run(() =>
             {
-                customers customers = ctx.customers.Where(key => key.customeremail == email).FirstOrDefault();
-                if (customers == null) throw new Exception("Cliente No Encontrado");
-                return customers;
-            }
+                using (dbEntities ctx = new dbEntities())
+                {
+                    customers customers = ctx.customers.Where(key => key.customeremail == email).FirstOrDefault();
+                    return customers;
+
+                }
+            });
+        }
+        public async Task<customers> GetByDni(string dni)
+        {
+            return await Task.Run(() =>
+            {
+                using (dbEntities ctx = new dbEntities())
+                {
+                    customers customers = ctx.customers.Where(key => key.customerdni == dni).FirstOrDefault();
+
+                    return customers;
+                }
+            });
         }
 
         public async Task<string> GetRefreshToken(int id)

@@ -9,7 +9,8 @@ namespace Data.Repositories
 {
     public interface ICustomerRepository : IRepository<customers>
     {
-        customers GetByEmail(string email);
+        Task<customers> GetByEmail(string email);
+        Task<customers> GetByDni(string dni);
         Task<string> GetRefreshToken(int id);
     }
 }

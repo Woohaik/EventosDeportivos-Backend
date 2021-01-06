@@ -20,6 +20,20 @@ namespace Domain.Services.Customer.crud
 
         public async Task Add(ICustomer model)
         {
+            customers emailCustomer = null;
+            customers dniCustomer = null;
+ 
+                emailCustomer = await this.customerRepository.GetByEmail(model.email);
+                dniCustomer = await this.customerRepository.GetByDni(model.dni);
+
+   
+    
+
+            if (emailCustomer != null) throw new Exception("Correo Electronico Ya ha sido tomado");
+            if (dniCustomer != null) throw new Exception("Ya tienes una cuenta DNI ya usado");
+
+
+
 
             customers dbCustomer = new customers()
             {

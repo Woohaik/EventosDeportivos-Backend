@@ -38,7 +38,8 @@ namespace Domain.Services.Customer.auth
 
         public async Task<IWholeAuth> LoginCustomer(ICredential credentials)
         {
-            customers dbCustomer = this.customerRepository.GetByEmail(credentials.email);
+            customers dbCustomer = await this.customerRepository.GetByEmail(credentials.email);
+            if (dbCustomer == null) throw new Exception("Cliente No Encontrado");
             if (!this.validatePassword(credentials.password, dbCustomer.customerpassword)) throw new Exception("Contraseña Incorrecta");
             return await saveNewRefreshToken(dbCustomer);
         }

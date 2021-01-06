@@ -13,9 +13,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Api.Controllers
 {
+
+
+    [EnableCors("*", "*", "*")]
     public class ReservationController : ApiController
     {
         private IReservationService reservationCrudServices = ReservationService.Instance;
@@ -35,7 +39,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorDto(ex));
             }
         }
 
@@ -48,16 +52,9 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorDto(ex));
             }
         }
-
-        //[Route("/api/reservation/customer")]
-        //public async Task<HttpResponseMessage> GetCustomerReservations(int Customerid)
-        //{
-
-        //    return Request.CreateResponse(HttpStatusCode.OK, "wario " + Customerid);
-        //}
 
         [HttpPost]
         public async Task<HttpResponseMessage> CreateReservation([FromBody] ReservationModel reservation)
@@ -72,7 +69,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorDto(ex));
             }
 
         }
@@ -87,7 +84,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorDto(ex));
             }
         }
     }
