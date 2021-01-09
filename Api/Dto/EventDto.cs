@@ -14,7 +14,7 @@ namespace Api.Dto
         public int limit { get; set; }
         public DateTime start { get; set; }
         public DateTime finish { get; set; }
-        int eventType { get; set; }
+        public int eventType { get; set; }
 
         public EventDto(IEvent theEvent)
         {

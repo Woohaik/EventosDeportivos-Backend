@@ -110,10 +110,12 @@ namespace Data.Repositories
                 if (customers == null) throw new Exception("Cliente No Encontrado");
                 customers.customerdni = entity.customerdni;
                 customers.customeremail = entity.customeremail;
-                customers.customername = entity.customerlastname;
-                customers.customerpassword = entity.customerpassword;
+                customers.customername = entity.customername;
+
                 customers.customerlastname = entity.customerlastname;
-                customers.refreshtoken = entity.refreshtoken;
+        
+
+                if(entity.refreshtoken != null) customers.refreshtoken = entity.refreshtoken;
 
 
                 await ctx.SaveChangesAsync();
