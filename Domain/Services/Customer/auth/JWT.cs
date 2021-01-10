@@ -20,8 +20,8 @@ namespace Domain.Services.Customer.auth
         public string GenerateToken(ICustomer model, bool isRefresh)
         {
            
-            DateTime expiresIn = DateTime.UtcNow.AddMinutes(1);
-            if (isRefresh) expiresIn = expiresIn.AddMinutes(15);           // Refresh Token Tarda mas 
+            DateTime expiresIn = DateTime.UtcNow.AddMinutes(60);
+            if (isRefresh) expiresIn = expiresIn.AddMinutes(15000);           // Refresh Token Tarda mas 
 
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);

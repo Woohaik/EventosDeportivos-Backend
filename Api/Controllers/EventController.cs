@@ -25,6 +25,7 @@ namespace Api.Controllers
         private IEventService eventCrudServices = EventService.Instance;
         private AnotationValidator<EventModel> validator = AnotationValidator<EventModel>.Instance;
 
+
         public async Task<HttpResponseMessage> GetCustomers()
         {
 
