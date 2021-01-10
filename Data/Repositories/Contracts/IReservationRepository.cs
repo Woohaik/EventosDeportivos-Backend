@@ -1,4 +1,4 @@
-﻿using Data.DBMODELS;
+﻿using Data.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +9,6 @@ namespace Data.Repositories
 {
     public interface IReservationRepository : IRepository<reservations>
     {
+        Task<int> GetTotalReservationsByEventId(int id);
     }
 }

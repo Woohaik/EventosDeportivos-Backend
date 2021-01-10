@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
-using Data.DBMODELS;
+using Data.DB;
 using Domain.Services.Customer.crud;
 
 namespace Domain.Services.Customer.auth
@@ -38,7 +38,8 @@ namespace Domain.Services.Customer.auth
 
         public async Task<IWholeAuth> LoginCustomer(ICredential credentials)
         {
-            customers dbCustomer = this.customerRepository.GetByEmail(credentials.email);
+            customers dbCustomer = await this.customerRepository.GetByEmail(credentials.email);
+            if (dbCustomer == null) throw new Exception("Cliente No Encontrado");
             if (!this.validatePassword(credentials.password, dbCustomer.customerpassword)) throw new Exception("Contraseña Incorrecta");
             return await saveNewRefreshToken(dbCustomer);
         }

@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Data.DBMODELS
+namespace Data.DB
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class dockerdbEntities : DbContext
+    public partial class dbEntities : DbContext
     {
-        public dockerdbEntities()
-            : base("name=dockerdbEntities")
+        public dbEntities()
+            : base("name=dbEntities")
         {
         }
     

@@ -9,9 +9,12 @@ using System.Net.Http;
 using System.Web.Http;
 using Api.Validators;
 using System.Threading.Tasks;
+using Api.Dto;
+using System.Web.Http.Cors;
 
 namespace Api.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class AuthController : ApiController
     {
 
@@ -27,12 +30,11 @@ namespace Api.Controllers
                 int customerID = Convert.ToInt32(Request.Headers.GetValues("CustomerId").First());
                 IAuthentication theAuthentication = await this.customerAuthServices.GetAuthenticatedCustomer(customerID);
                 if (theAuthentication == null) throw new Exception("No existe Cliente con ese Id");
-                return Request.CreateResponse(HttpStatusCode.OK, theAuthentication);
-
+                return Request.CreateResponse(HttpStatusCode.OK, new AuthDto(theAuthentication));
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, ex);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, new ErrorDto(ex));
             }
 
 

@@ -28,6 +28,9 @@ namespace Domain.Models.Event
         public DateTime finish { get; set; }
 
         [Required(ErrorMessage = "Tipo de evento requerido")]
+        [RegularExpression("(FUTBOL|BALONCESTO|VOLEIBOL|ATLETISMO)", ErrorMessage = "Tipo de evento no puede estar vacio o ser 0")]
         public EventTypes eventType { get; set; }
+
+        public int freeSpaces { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Data.DBMODELS;
+﻿using Data.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace Data.Repositories
 
         public async Task Add(reservations entity)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 ctx.reservations.Add(entity);
                 await ctx.SaveChangesAsync();
@@ -36,7 +36,7 @@ namespace Data.Repositories
 
         public async Task DeleteById(int id)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 reservations reservation = await ctx.reservations.FindAsync(id);
                 if (reservation == null) throw new Exception("Reserva No Encontrada");
@@ -49,9 +49,14 @@ namespace Data.Repositories
         {
             return await Task.Run(() =>
              {
-                 using (dockerdbEntities ctx = new dockerdbEntities())
+                 using (dbEntities ctx = new dbEntities())
                  {
                      IEnumerable<reservations> reservations = ctx.reservations.ToList();
+                     foreach (reservations reservation in reservations)
+                     {
+                         reservation.events = reservation.events;
+                         reservation.customers = reservation.customers;
+                     }
                      return reservations;
                  }
              });
@@ -59,13 +64,37 @@ namespace Data.Repositories
 
         public async Task<reservations> GetById(int id)
         {
-            using (dockerdbEntities ctx = new dockerdbEntities())
+            using (dbEntities ctx = new dbEntities())
             {
                 reservations reservation = await ctx.reservations.FindAsync(id);
                 if (reservation == null) throw new Exception("Reserva No Encontrada");
 
+                reservation.events = reservation.events;
+
+                reservation.customers = reservation.customers;
+
                 return reservation;
             }
+        }
+
+
+        public async Task<int> GetTotalReservationsByEventId(int id)
+        {
+            return await Task.Run(() =>
+            {
+                using (dbEntities ctx = new dbEntities())
+                {
+                    IEnumerable<reservations> reservations = ctx.reservations.Where(enti => enti.eventsid == id);
+                    int sum = 0;
+                    foreach (reservations reservation in reservations)
+                    {
+                        sum += reservation.quantity;
+                    }
+
+                    return sum;
+                }
+            });
+
         }
 
         public Task UpdateById(int id, reservations entity)

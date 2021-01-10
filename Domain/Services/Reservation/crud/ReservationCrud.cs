@@ -1,4 +1,4 @@
-﻿using Data.DBMODELS;
+﻿using Data.DB;
 using Data.Repositories;
 using Domain.Models.Customer;
 using Domain.Models.Event;
@@ -20,9 +20,10 @@ namespace Domain.Services.Reservation.crud
         {
             reservations dbReservation = new reservations()
             {
-                cantidad = model.quantity,
+                quantity = model.quantity,
                 customersid = model.reservationCustomer.id,
-                eventsid = model.reservationEvent.id
+                eventsid = model.reservationEvent.id,
+                boughtday = DateTime.Now,
             };
 
             await this.reservationRepository.Add(dbReservation);
@@ -39,9 +40,10 @@ namespace Domain.Services.Reservation.crud
             List<IReservation> domainReservation = new List<IReservation>();
             foreach (reservations dbReservation in dbReservations)
             {
+
                 domainReservation.Add(new ReservationModel()
                 {
-                    quantity = dbReservation.cantidad,
+                    quantity = dbReservation.quantity,
                     reservationCustomer = new CustomerModel()
                     {
                         id = dbReservation.customers.customerid,
@@ -60,7 +62,9 @@ namespace Domain.Services.Reservation.crud
                         limit = dbReservation.events.eventlimit,
                         eventType = (EventTypes)dbReservation.events.eventtypecode
                     },
-                    id = dbReservation.reservarionid
+                    id = dbReservation.reservarionid,
+                    boughtTime = dbReservation.boughtday
+
                 });
             }
             return domainReservation;
@@ -72,7 +76,8 @@ namespace Domain.Services.Reservation.crud
             reservations dbReservation = await this.reservationRepository.GetById(id);
             IReservation domainReservation = new ReservationModel()
             {
-                quantity = dbReservation.cantidad,
+                
+                quantity = dbReservation.quantity,
                 reservationCustomer = new CustomerModel()
                 {
                     id = dbReservation.customers.customerid,
@@ -91,7 +96,8 @@ namespace Domain.Services.Reservation.crud
                     limit = dbReservation.events.eventlimit,
                     eventType = (EventTypes)dbReservation.events.eventtypecode
                 },
-                id = dbReservation.reservarionid
+                id = dbReservation.reservarionid,
+                boughtTime = dbReservation.boughtday
             };
             return domainReservation;
         }

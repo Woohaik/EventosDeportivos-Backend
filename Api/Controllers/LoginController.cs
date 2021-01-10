@@ -13,9 +13,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Api.Controllers
 {
+
+    [EnableCors("*", "*", "*")]
     public class LoginController : ApiController
     {
 
@@ -29,12 +32,12 @@ namespace Api.Controllers
             {
                 validator.validate(userCred);
                 IWholeAuth authModel = await customerAuthServices.LoginCustomer(userCred);
-                AuthTokenDto authCustomerTokensDto = new AuthTokenDto(authModel);
+                AuthRefreshDto authCustomerTokensDto = new AuthRefreshDto(authModel);
                 return Request.CreateResponse(HttpStatusCode.OK, authCustomerTokensDto);
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorDto(ex));
             }
 
 

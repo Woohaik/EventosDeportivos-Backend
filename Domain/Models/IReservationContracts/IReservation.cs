@@ -14,5 +14,6 @@ namespace Domain.Models.IReservationContracts
         int quantity { get; set; }
         ICustomer reservationCustomer { get; set; }
         IEvent reservationEvent { get; set; }
+        DateTime boughtTime { get; set; }
     }
 }

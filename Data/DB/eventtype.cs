@@ -7,28 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Data.DBMODELS
+namespace Data.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class customers
+    public partial class eventtype
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public customers()
+        public eventtype()
         {
-            this.reservations = new HashSet<reservations>();
+            this.events = new HashSet<events>();
         }
     
-        public int customerid { get; set; }
-        public string customername { get; set; }
-        public string customerlastname { get; set; }
-        public string customeremail { get; set; }
-        public string customerdni { get; set; }
-        public string customerpassword { get; set; }
-        public string refreshtoken { get; set; }
+        public int code { get; set; }
+        public string value { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<reservations> reservations { get; set; }
+        public virtual ICollection<events> events { get; set; }
     }
 }

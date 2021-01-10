@@ -1,7 +1,7 @@
 ﻿using Domain.Models.IEventContracts;
 using System;
 
-using Data.DBMODELS;
+using Data.DB;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,6 +50,7 @@ namespace Domain.Services.Event.crud
                     finish = dbEvent.eventfinish,
                     limit = dbEvent.eventlimit,
                     eventType = (EventTypes)dbEvent.eventtypecode,
+                    
 
                 });
 
@@ -70,6 +71,8 @@ namespace Domain.Services.Event.crud
                 limit = dbEvent.eventlimit,
                 eventType = (EventTypes)dbEvent.eventtypecode
             };
+
+
 
             return domainEvent;
         }

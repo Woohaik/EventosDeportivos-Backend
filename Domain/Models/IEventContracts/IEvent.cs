@@ -15,5 +15,6 @@ namespace Domain.Models.IEventContracts
         DateTime start { get; set; }
         DateTime finish { get; set; }
         EventTypes eventType { get; set; }
+        int freeSpaces { get; set; }
     }
 }
